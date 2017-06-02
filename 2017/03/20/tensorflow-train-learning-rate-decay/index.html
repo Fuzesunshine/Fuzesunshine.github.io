@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    
+    
+    
+    <title>tensorflow.train.learning_rate_decay() | fuze blog | 专心学术，专心看书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#111F1B">
+    
+    
+    <meta name="keywords" content="tensorflow,Machine learning">
+    <meta name="description" content="学习udacity/3_regularization.ipynb时，发现tf.train.exponential_decay()函数，阅读源码，大概知道意思：
+源码截取如下：
+1234567891011121314151617def exponential_decay(learning_rate, global_step, decay_steps, decay_rate,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tensorflow.train.learning_rate_decay()">
+<meta property="og:url" content="http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/index.html">
+<meta property="og:site_name" content="fuze blog">
+<meta property="og:description" content="学习udacity/3_regularization.ipynb时，发现tf.train.exponential_decay()函数，阅读源码，大概知道意思：
+源码截取如下：
+1234567891011121314151617def exponential_decay(learning_rate, global_step, decay_steps, decay_rate,">
+<meta property="og:updated_time" content="2017-06-02T02:28:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tensorflow.train.learning_rate_decay()">
+<meta name="twitter:description" content="学习udacity/3_regularization.ipynb时，发现tf.train.exponential_decay()函数，阅读源码，大概知道意思：
+源码截取如下：
+1234567891011121314151617def exponential_decay(learning_rate, global_step, decay_steps, decay_rate,">
+    
+        <link rel="alternate" type="application/atom+xml" title="fuze blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.7">
+    <script>window.lazyScripts=[]</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fuze</h5>
+          <a href="mailto:fuzecong@gmail.com" title="fuzecong@gmail.com" class="mail">fuzecong@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/fuzesunshine" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">tensorflow.train.learning_rate_decay()</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">tensorflow.train.learning_rate_decay()</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-03-20T14:01:43.000Z" itemprop="datePublished" class="page-time">
+  2017-03-20
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+<article id="post-tensorflow-train-learning-rate-decay"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">tensorflow.train.learning_rate_decay()</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-03-20 22:01:43" datetime="2017-03-20T14:01:43.000Z"  itemprop="datePublished">2017-03-20</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>学习udacity/3_regularization.ipynb时，发现<code>tf.train.exponential_decay()</code>函数，阅读源码，大概知道意思：</p>
+<p>源码截取如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exponential_decay</span><span class="params">(learning_rate, global_step, decay_steps, decay_rate,</span><br><span class="line">                      staircase=False, name=None)</span>:</span></span><br><span class="line">  <span class="keyword">if</span> global_step <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">"global_step is required for exponential_decay."</span>)</span><br><span class="line">  <span class="keyword">with</span> ops.name_scope(name, <span class="string">"ExponentialDecay"</span>,</span><br><span class="line">                      [learning_rate, global_step,</span><br><span class="line">                       decay_steps, decay_rate]) <span class="keyword">as</span> name:</span><br><span class="line">    learning_rate = ops.convert_to_tensor(learning_rate, name=<span class="string">"learning_rate"</span>)</span><br><span class="line">    dtype = learning_rate.dtype</span><br><span class="line">    global_step = math_ops.cast(global_step, dtype)</span><br><span class="line">    decay_steps = math_ops.cast(decay_steps, dtype)</span><br><span class="line">    decay_rate = math_ops.cast(decay_rate, dtype)</span><br><span class="line">    p = global_step / decay_steps</span><br><span class="line">    <span class="keyword">if</span> staircase:</span><br><span class="line">      p = math_ops.floor(p)</span><br><span class="line">    <span class="keyword">return</span> math_ops.multiply(learning_rate, math_ops.pow(decay_rate, p),</span><br><span class="line">                             name=name)</span><br></pre></td></tr></table></figure>
+<p>看注释及代码可知<br>$$decayed\ learning\ rate = learning\ rate \times decay\ rate ^ {global\ step / decay\ steps}$$<br>即每隔<code>global_step</code>步进行一次递减，递减的方式为上一个<code>learing_rate</code>乘上<code>decay_rate</code>。由此可见，使用该方法下降<code>learning_rate</code>可使其迅速减小。</p>
+<p>同时在Problem 4中，我使用了5层神经网络，用了L2正则以及dropout。我发现增加网络的层数并没有显著提高正确率，增加<code>batch_size</code>却可以提高正确率至96.4%。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-06-02T02:28:37.000Z" itemprop="dateUpdated">2017-06-02 10:28:37</time>
+</span><br>
+
+
+        
+        Thanks for reading.
+        
+    </div>
+    <footer>
+        <a href="http://yoursite.com">
+            <img src="/img/avatar.png" alt="fuze">
+            fuze
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Machine-learning/">Machine learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/&title=《tensorflow.train.learning_rate_decay()》 — fuze blog&pic=http://yoursite.com/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/&title=《tensorflow.train.learning_rate_decay()》 — fuze blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《tensorflow.train.learning_rate_decay()》 — fuze blog&url=http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/03/13/Bug日记/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Bug日记</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Fuzesunshine',
+            repo: 'BlogComment',
+            oauth: {
+                client_id: '716b70c2b7b3de6f7f89',
+                client_secret: '71a4d4ab3abf26c245fe1b2c35adc3d79b75f5ba',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>fuze &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/&title=《tensorflow.train.learning_rate_decay()》 — fuze blog&pic=http://yoursite.com/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/&title=《tensorflow.train.learning_rate_decay()》 — fuze blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《tensorflow.train.learning_rate_decay()》 — fuze blog&url=http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACrElEQVR42u3aQY4iMQwFUO5/6RmpVzNCVP/vJEUtXlYIaMovi8Rt+/WK15+f9f7633fev/Ppnff16YnXz9228PDw8EahXz/4OtB8O67/Komq3iw8PDy8Y7wkxPx6WA/u0+/nMePh4eE9gbeyBW1KPUuv8fDw8J7GS4oOySOTSwUPDw/v+bw2CW43Ij/0v1ZrwcPDw5tnsEUD7Fuvb+rv4eHh4ZVd9TyNzocAVhpsdbR4eHh4B3h5sWA2CDUrLsyKIB8jwcPDwzvAWykK7Bo4WPl+lHzj4eHh3cKblVaToGfNs/wSwsPDw7uflye1+S+c2ILi+3h4eHibeEmRNG8+telvkqwnwwpF1w4PDw9vE29WIGgvj9mlkpPq+goeHh7eiNeWa1cKFm0yvX6d4OHh4Z3jrTSl2iGt2VjAbBgLDw8P7xwvT3nbhLsNIt+4OvnGw8PD28Rr0+ik2Z8nyu2nw8sADw8P7xZe1F4qecNUOH4KHh4e3j28lUR2JaDZQd8WfPHw8PDO8WbjAi1mnd2WP/Dw8PBO82awfDYhryi3pd7oYsDDw8Pbykvc122tfDCrHTLInxVNRuDh4eEt82ZpdHttrJRx22sADw8P7x5e8m98nlLn7ySb2LL7/hgeHh7ehJckzesXRh7utoWHh4f3Jd5sSCvn7U3K//srPDw8vAO82ZWQfNoOHCSBzlpxeHh4eHt5+bG+cojPyhzrmTMeHh7eaV6yVg7r9tc2JOV4eHh4B3izw7cNvS0ftK83F3zx8PDw4tB3XQbJqMF6aTi/TvDw8PDO8Y40n8qxquTXivo0Hh4e3gN47VGelxhmZY4o1cbDw8N7AK89e9txhHZTfmm54eHh4R3jzZpPbdKcD2y1iXs0eoWHh4e3ibcy2NQOHKwPChxZeHh4eOn6C12IDmJ/oEHoAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.7"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.7" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'hahahaha';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'fuze's blog';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>

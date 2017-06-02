@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    
+    
+    
+    <title>将cocos工程加入到iOS工程中 | fuze blog | 专心学术，专心看书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#111F1B">
+    
+    
+    <meta name="keywords" content="iOS,cocos2dx">
+    <meta name="description" content="本文讨论的是这样一种情况：一个iOS应用中有一个游戏，iOS程序与游戏是单独开发，并且游戏是用cocos2dx引擎。这样在开发结束时，我们需要将这两个工程合到一起，换句话说就是讲cocos游戏嵌入到iOS应用中。
+大致思路我的解决方案的大致思路是这样的：将cocos引擎添加到iOS工程中，在合适的位置进入cocos游戏界面。
+步骤向iOS工程中加入文件首先按cocos官网上的方法生成cocos工程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="将cocos工程加入到iOS工程中">
+<meta property="og:url" content="http://yoursite.com/2016/07/05/将cocos工程加入到iOS工程中/index.html">
+<meta property="og:site_name" content="fuze blog">
+<meta property="og:description" content="本文讨论的是这样一种情况：一个iOS应用中有一个游戏，iOS程序与游戏是单独开发，并且游戏是用cocos2dx引擎。这样在开发结束时，我们需要将这两个工程合到一起，换句话说就是讲cocos游戏嵌入到iOS应用中。
+大致思路我的解决方案的大致思路是这样的：将cocos引擎添加到iOS工程中，在合适的位置进入cocos游戏界面。
+步骤向iOS工程中加入文件首先按cocos官网上的方法生成cocos工程">
+<meta property="og:image" content="http://i2.piimg.com/568443/bf0194e50b26bd19.png">
+<meta property="og:image" content="http://i2.piimg.com/568443/906b2df33c673389.png">
+<meta property="og:image" content="http://i2.piimg.com/568443/d89b38ff2fa46a2b.png">
+<meta property="og:image" content="http://i4.piimg.com/568443/59b00a328c3dfcc9.png">
+<meta property="og:updated_time" content="2017-06-02T02:28:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="将cocos工程加入到iOS工程中">
+<meta name="twitter:description" content="本文讨论的是这样一种情况：一个iOS应用中有一个游戏，iOS程序与游戏是单独开发，并且游戏是用cocos2dx引擎。这样在开发结束时，我们需要将这两个工程合到一起，换句话说就是讲cocos游戏嵌入到iOS应用中。
+大致思路我的解决方案的大致思路是这样的：将cocos引擎添加到iOS工程中，在合适的位置进入cocos游戏界面。
+步骤向iOS工程中加入文件首先按cocos官网上的方法生成cocos工程">
+<meta name="twitter:image" content="http://i2.piimg.com/568443/bf0194e50b26bd19.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="fuze blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.7">
+    <script>window.lazyScripts=[]</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fuze</h5>
+          <a href="mailto:fuzecong@gmail.com" title="fuzecong@gmail.com" class="mail">fuzecong@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/fuzesunshine" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">将cocos工程加入到iOS工程中</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">将cocos工程加入到iOS工程中</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-07-05T12:43:50.000Z" itemprop="datePublished" class="page-time">
+  2016-07-05
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/learning/">learning</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#大致思路"><span class="post-toc-number">1.</span> <span class="post-toc-text">大致思路</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#步骤"><span class="post-toc-number">2.</span> <span class="post-toc-text">步骤</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#向iOS工程中加入文件"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">向iOS工程中加入文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#更改工程设置"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">更改工程设置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#更改工程入口"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">更改工程入口</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-将cocos工程加入到iOS工程中"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">将cocos工程加入到iOS工程中</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-07-05 20:43:50" datetime="2016-07-05T12:43:50.000Z"  itemprop="datePublished">2016-07-05</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/learning/">learning</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>本文讨论的是这样一种情况：一个iOS应用中有一个游戏，iOS程序与游戏是单独开发，并且游戏是用cocos2dx引擎。这样在开发结束时，我们需要将这两个工程合到一起，换句话说就是讲cocos游戏嵌入到iOS应用中。</p>
+<h2 id="大致思路"><a href="#大致思路" class="headerlink" title="大致思路"></a>大致思路</h2><p>我的解决方案的大致思路是这样的：将cocos引擎添加到iOS工程中，在合适的位置进入cocos游戏界面。</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="向iOS工程中加入文件"><a href="#向iOS工程中加入文件" class="headerlink" title="向iOS工程中加入文件"></a>向iOS工程中加入文件</h3><p>首先按cocos官网上的方法生成cocos工程，向iOS工程中添加cocos工程中的Classes/、proj.ios_mac/ios/、resources复制到iOS工程的文件夹中。向工程中添加文件：Classes/、ios/、cocos2d/build/cocos2d_libs.xcodeproj。<br><a id="more"></a></p>
+<h3 id="更改工程设置"><a href="#更改工程设置" class="headerlink" title="更改工程设置"></a>更改工程设置</h3><p>1.向工程中添加如图所示的库<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://i2.piimg.com/568443/bf0194e50b26bd19.png" alt="Markdown" title="">
+                </div>
+                <div class="image-caption">Markdown</div>
+            </figure><br>2.向 Building Setting&gt;Header Search Paths 中添加项<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://i2.piimg.com/568443/906b2df33c673389.png" alt="Markdown" title="">
+                </div>
+                <div class="image-caption">Markdown</div>
+            </figure><br>3.在 Building Setting 中更改工程设置<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://i2.piimg.com/568443/d89b38ff2fa46a2b.png" alt="Markdown" title="">
+                </div>
+                <div class="image-caption">Markdown</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://i4.piimg.com/568443/59b00a328c3dfcc9.png" alt="Markdown" title="">
+                </div>
+                <div class="image-caption">Markdown</div>
+            </figure><br>4.删除原工程的 main.m、AppDelegate.h/m 文件</p>
+<h3 id="更改工程入口"><a href="#更改工程入口" class="headerlink" title="更改工程入口"></a>更改工程入口</h3><p>具体设置参照<a href="http://blog.csdn.net/crayondeng/article/details/16828555" target="_blank" rel="external">博客</a>，大致的思路就是修改cocos工程的入口AppController文件，在需要嵌入游戏的位置初始化RootViewController即可。</p>
+<p><strong>合并后的工程在<a href="https://github.com/Fuzesunshine/CocosTest" target="_blank" rel="external">这里</a>.</strong></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-06-02T02:28:38.000Z" itemprop="dateUpdated">2017-06-02 10:28:38</time>
+</span><br>
+
+
+        
+        Thanks for reading.
+        
+    </div>
+    <footer>
+        <a href="http://yoursite.com">
+            <img src="/img/avatar.png" alt="fuze">
+            fuze
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos2dx/">cocos2dx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2016/07/05/将cocos工程加入到iOS工程中/&title=《将cocos工程加入到iOS工程中》 — fuze blog&pic=http://yoursite.com/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2016/07/05/将cocos工程加入到iOS工程中/&title=《将cocos工程加入到iOS工程中》 — fuze blog&source=本文讨论的是这样一种情况：一个iOS应用中有一个游戏，iOS程序与游戏是单独开发，并且游戏是用cocos2dx引擎。这样在开发结束时，我们需要将这两个工程..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2016/07/05/将cocos工程加入到iOS工程中/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《将cocos工程加入到iOS工程中》 — fuze blog&url=http://yoursite.com/2016/07/05/将cocos工程加入到iOS工程中/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2016/07/05/将cocos工程加入到iOS工程中/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/07/26/制作POP翻页动画/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">制作POP翻页动画</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2016/03/23/开始我的hexo博客/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">开始我的hexo博客</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Fuzesunshine',
+            repo: 'BlogComment',
+            oauth: {
+                client_id: '716b70c2b7b3de6f7f89',
+                client_secret: '71a4d4ab3abf26c245fe1b2c35adc3d79b75f5ba',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>fuze &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2016/07/05/将cocos工程加入到iOS工程中/&title=《将cocos工程加入到iOS工程中》 — fuze blog&pic=http://yoursite.com/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2016/07/05/将cocos工程加入到iOS工程中/&title=《将cocos工程加入到iOS工程中》 — fuze blog&source=本文讨论的是这样一种情况：一个iOS应用中有一个游戏，iOS程序与游戏是单独开发，并且游戏是用cocos2dx引擎。这样在开发结束时，我们需要将这两个工程..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2016/07/05/将cocos工程加入到iOS工程中/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《将cocos工程加入到iOS工程中》 — fuze blog&url=http://yoursite.com/2016/07/05/将cocos工程加入到iOS工程中/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2016/07/05/将cocos工程加入到iOS工程中/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACn0lEQVR42u3aUa7iMBAEQO5/6d0DPBG6Z2zER+ULkZBMBcketf16xce/P0fyffL572+T5x4+8PDw8NalJ4z2ke/u9u6b9tW8rQcPDw/vGi8pqGXMfttSPzwLDw8P74d5SXM8a5SfW3Y8PDy83+fNitsEEHh4eHi/yctvl599bo5nE8/FrAUPDw9vm7sWk8T3P19Z38PDw8Nbr6q32wVmg3gOqKvFw8PDu8CbRbTPBeXNd75stgl88fDw8M7y8jj1uYhZLNvesw6O8fDw8C7wZoVuQtU9ZgbGw8PDO8XLl6nySCK5cna2btnx8PDwLvA2je8sor0RVawWw/Dw8PBK3qzlbZeporCg7ISj2vDw8PAu8GYbm2bXzELefMKI/kM8PDy8Q7zhgDuaPGZTxQqGh4eH93XeqSjh1IaANtjFw8PDO8vbbAXIg4zZBJDEEB9eNB4eHt4FXhLdzjZLtT3t7KibaTw8PLxDvOdHtstRs8c/D/r7sBgPDw/vFO/U5qq2lE2bXkwSeHh4eNd4ySPbgTtfDDs1FeHh4eF9n5cPu/tWu22dkwgDDw8P7zu8fKlpBthMADnsQz14eHh4R3lJ6bNFqXahK5l4kkCkeK94eHh4I94mhpiFDnlxbYTx9iweHh7eNV4bks4C3DakGO6DaHcl4OHh4S14OaZdJEvu1p6NXgQeHh7eV3izhasEnLfXeZDxoWY8PDy8o7xNVLopKw92N8EHHh4e3g1eO+AO9ybEGwjyBnr/+vDw8PA2vLzBbRmbTQk5+8Od8fDw8K7xNgN9e2UeW7z2Bx4eHt4P8GZTSNsKt1uy3l6Ph4eH95O8dnxuI4Y2qsDDw8P7Dm/W+OYR7X4T6qz1x8PDw7vBmw3rm4mhfWWH4wk8PDy8Oe8/BkL33R77ie0AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.7"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.7" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'hahahaha';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'fuze's blog';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>

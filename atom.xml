@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>fuze blog</title>
+  <subtitle>专心学术，专心看书</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2017-06-02T02:28:37.000Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>fuze</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>tensorflow.train.learning_rate_decay()</title>
+    <link href="http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/"/>
+    <id>http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/</id>
+    <published>2017-03-20T14:01:43.000Z</published>
+    <updated>2017-06-02T02:28:37.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>学习udacity/3_regularization.ipynb时，发现<code>tf.train.exponential_decay()</code>函数，阅读源码，大概知道意思：</p>
+<p>源码截取如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exponential_decay</span><span class="params">(learning_rate, global_step, decay_steps, decay_rate,</span><br><span class="line">                      staircase=False, name=None)</span>:</span></span><br><span class="line">  <span class="keyword">if</span> global_step <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">"global_step is required for exponential_decay."</span>)</span><br><span class="line">  <span class="keyword">with</span> ops.name_scope(name, <span class="string">"ExponentialDecay"</span>,</span><br><span class="line">                      [learning_rate, global_step,</span><br><span class="line">                       decay_steps, decay_rate]) <span class="keyword">as</span> name:</span><br><span class="line">    learning_rate = ops.convert_to_tensor(learning_rate, name=<span class="string">"learning_rate"</span>)</span><br><span class="line">    dtype = learning_rate.dtype</span><br><span class="line">    global_step = math_ops.cast(global_step, dtype)</span><br><span class="line">    decay_steps = math_ops.cast(decay_steps, dtype)</span><br><span class="line">    decay_rate = math_ops.cast(decay_rate, dtype)</span><br><span class="line">    p = global_step / decay_steps</span><br><span class="line">    <span class="keyword">if</span> staircase:</span><br><span class="line">      p = math_ops.floor(p)</span><br><span class="line">    <span class="keyword">return</span> math_ops.multiply(learning_rate, math_ops.pow(decay_rate, p),</span><br><span class="line">                             name=name)</span><br></pre></td></tr></table></figure>
+<p>看注释及代码可知<br>$$decayed\ learning\ rate = learning\ rate \times decay\ rate ^ {global\ step / decay\ steps}$$<br>即每隔<code>global_step</code>步进行一次递减，递减的方式为上一个<code>learing_rate</code>乘上<code>decay_rate</code>。由此可见，使用该方法下降<code>learning_rate</code>可使其迅速减小。</p>
+<p>同时在Problem 4中，我使用了5层神经网络，用了L2正则以及dropout。我发现增加网络的层数并没有显著提高正确率，增加<code>batch_size</code>却可以提高正确率至96.4%。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;学习udacity/3_regularization.ipynb时，发现&lt;code&gt;tf.train.exponential_decay()&lt;/code&gt;函数，阅读源码，大概知道意思：&lt;/p&gt;
+&lt;p&gt;源码截取如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight 
+    
+    </summary>
+    
+    
+      <category term="tensorflow" scheme="http://yoursite.com/tags/tensorflow/"/>
+    
+      <category term="Machine learning" scheme="http://yoursite.com/tags/Machine-learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Bug日记</title>
+    <link href="http://yoursite.com/2017/03/13/Bug%E6%97%A5%E8%AE%B0/"/>
+    <id>http://yoursite.com/2017/03/13/Bug日记/</id>
+    <published>2017-03-13T10:24:50.000Z</published>
+    <updated>2017-06-02T02:28:37.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>得到了一个iPod并希望在上面调试程序，但是总是显示App installation failed - There was an error communicating with your device.<br>在官网上并没有搜索在解决方案。最后将iPod强行恢复出厂设置，bug fix！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;得到了一个iPod并希望在上面调试程序，但是总是显示App installation failed - There was an error communicating with your device.&lt;br&gt;在官网上并没有搜索在解决方案。最后将iPod强行恢复出厂设置，
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>制作POP翻页动画</title>
+    <link href="http://yoursite.com/2016/07/26/%E5%88%B6%E4%BD%9CPOP%E7%BF%BB%E9%A1%B5%E5%8A%A8%E7%94%BB/"/>
+    <id>http://yoursite.com/2016/07/26/制作POP翻页动画/</id>
+    <published>2016-07-26T12:16:59.000Z</published>
+    <updated>2017-06-02T02:28:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>我利用了POP库制作了简单的广告展示的翻页效果：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2016/07/26/制作POP翻页动画/yanshi.gif" alt="yanshi" title="">
+                </div>
+                <div class="image-caption">yanshi</div>
+            </figure><br><strong>源码在<a href="https://github.com/Fuzesunshine/3DTest" target="_blank" rel="external">这里</a></strong></p>
+<h2 id="大致思路"><a href="#大致思路" class="headerlink" title="大致思路"></a>大致思路</h2><p>首先简单分析一下动画效果：<br>我们使用了旋转以及平移两个动画效果，通过动图可以看到：通过手指拖动(pan)，图片在平移的同时绕着自身中轴线旋转。<br><a id="more"></a><br>那么怎么让图片绕着中轴线旋转呢？可以使用<em>POPBasicAnimation</em>中的<em>kPOPLayerRotaionY</em>制作旋转动画，中轴线的位置为锚点的位置，可以通过<em>anchorPoint</em>、<em>anchorPointZ</em>以及<em>position</em>共同确定锚点的三维坐标。至于<em>anchorPoint</em>与<em>position</em>如何共同确定绝对坐标可以参照<strong><a href="http://wonderffee.github.io/blog/2013/10/13/understand-anchorpoint-and-position/" target="_blank" rel="external">博客</a></strong>，简单来说：锚点是标志一个layer位置的点，<em>anchorPoint</em>是锚点在该layer的相对坐标，而<em>positon</em>是锚点在superView中的绝对坐标。<br>沿x轴的平移效果可以通过<em>POPBasicAnimaition</em>的<em>kPOPLayerPositionX</em>来实现。<strong>旋转的角度以及平移的距离都与手指拖动(pan)的距离有关</strong>。</p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>首先初始化五张图片，设置不同的位置，以及不同的旋转角度。在画面中只显示3张，但为了左右拖动时有图片补位，这里初始化5张。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (void)initPictures &#123;</span><br><span class="line">    for (int i = 0; i&lt;5; i++) &#123;</span><br><span class="line">        UIImageView *imgView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:[pictureNames objectAtIndex:i]]];</span><br><span class="line">        imgView.frame = CGRectMake(0, 0, 319, 187);</span><br><span class="line">        imgView.layer.anchorPoint = CGPointMake(0.5, 0.5);</span><br><span class="line">        imgView.layer.anchorPointZ = 100.0f;</span><br><span class="line">        imgView.layer.position = CGPointMake(-62+i*287, 374/4+30);</span><br><span class="line">        imgView.layer.transform = [self setTransform3D];</span><br><span class="line">        imgView.userInteractionEnabled = YES;</span><br><span class="line">        </span><br><span class="line">        POPBasicAnimation *initRotationAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerRotationY];</span><br><span class="line">        initRotationAnimation.duration = 0;</span><br><span class="line">        initRotationAnimation.toValue = @((2-i)*M_PI/6);</span><br><span class="line">        </span><br><span class="line">        [imgView.layer pop_addAnimation:initRotationAnimation forKey:@&quot;initRotation&quot;];</span><br><span class="line">        </span><br><span class="line">        [self showImageAndReflection:imgView];</span><br><span class="line">        </span><br><span class="line">        [imgViews addObject:imgView];</span><br><span class="line">        [self.view addSubview:imgView];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里通过<em>showImageAndReflection</em>函数来设置图片的倒影：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">- (void)showImageAndReflection:(UIImageView *)view &#123;</span><br><span class="line">    // 制作reflection</span><br><span class="line">    CALayer *layer = view.layer;</span><br><span class="line">    CALayer *reflectLayer = [CALayer layer];</span><br><span class="line">    reflectLayer.contents = layer.contents;</span><br><span class="line">    reflectLayer.bounds = layer.bounds;</span><br><span class="line">    reflectLayer.position = CGPointMake(layer.bounds.size.width/2, layer.bounds.size.height*1.5);</span><br><span class="line">    reflectLayer.transform = CATransform3DMakeRotation(M_PI, 1, 0, 0);</span><br><span class="line">    </span><br><span class="line">    // 给该reflection加个半透明的layer</span><br><span class="line">    CALayer *blackLayer = [CALayer layer];</span><br><span class="line">    blackLayer.backgroundColor = [UIColor whiteColor].CGColor;</span><br><span class="line">    blackLayer.bounds = reflectLayer.bounds;</span><br><span class="line">    blackLayer.position = CGPointMake(blackLayer.bounds.size.width/2, blackLayer.bounds.size.height/2);</span><br><span class="line">    blackLayer.opacity = 0.6;</span><br><span class="line">    [reflectLayer addSublayer:blackLayer];</span><br><span class="line">    </span><br><span class="line">    // 给该reflection加个mask</span><br><span class="line">    CAGradientLayer *mask = [CAGradientLayer layer];</span><br><span class="line">    mask.bounds = reflectLayer.bounds;</span><br><span class="line">    mask.position = CGPointMake(mask.bounds.size.width/2, mask.bounds.size.height/2);</span><br><span class="line">    mask.colors = [NSArray arrayWithObjects:</span><br><span class="line">                   (__bridge id)[UIColor clearColor].CGColor,</span><br><span class="line">                   (__bridge id)[UIColor whiteColor].CGColor, nil];</span><br><span class="line">    mask.startPoint = CGPointMake(0.5, 0.65);</span><br><span class="line">    mask.endPoint = CGPointMake(0.5, 1);</span><br><span class="line">    reflectLayer.mask = mask;</span><br><span class="line">    </span><br><span class="line">    // 作为layer的sublayer</span><br><span class="line">    [layer addSublayer:reflectLayer];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码参考<strong><a href="http://www.programgo.com/article/76012388626/" target="_blank" rel="external">这里</a></strong></p>
+<p>随后设置拖动手势<em>UIPanGestureRecognizer</em>并绑定<em>panAllHandle</em>函数，将手势绑定在当前view上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panAllHandle:)];</span><br><span class="line">[self.view addGestureRecognizer:panGesture];</span><br></pre></td></tr></table></figure>
+<p>处理函数<em>panAllHandle</em>为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br></pre></td><td class="code"><pre><span class="line">- (void)panAllHandle:(UIPanGestureRecognizer *)recognizer &#123;</span><br><span class="line">    CGPoint location = [recognizer locationInView:self.view];</span><br><span class="line">    if (recognizer.state == UIGestureRecognizerStateBegan) &#123;</span><br><span class="line">        num = location.x;</span><br><span class="line">    &#125;</span><br><span class="line">    NSMutableArray *rotationAnimations = [[NSMutableArray alloc]init];</span><br><span class="line">    NSMutableArray *moveAnimations = [[NSMutableArray alloc]init];</span><br><span class="line">    </span><br><span class="line">    NSMutableArray *rotationEndAnimations = [[NSMutableArray alloc]init];</span><br><span class="line">    NSMutableArray *moveEndAnimations = [[NSMutableArray alloc]init];</span><br><span class="line">    </span><br><span class="line">    for (int i = 0; i&lt;5; i++) &#123;</span><br><span class="line">        POPBasicAnimation *rotationAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerRotationY];</span><br><span class="line">        rotationAnimation.duration = 0.01;</span><br><span class="line">        POPBasicAnimation *moveAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionX];</span><br><span class="line">        moveAnimation.duration = 0.01;</span><br><span class="line">        </span><br><span class="line">        [rotationAnimations addObject:rotationAnimation];</span><br><span class="line">        [moveAnimations addObject:moveAnimation];</span><br><span class="line">    &#125;</span><br><span class="line">    if (YES) &#123;</span><br><span class="line">        CGFloat percent = M_PI / (6*287);</span><br><span class="line">        </span><br><span class="line">        POPBasicAnimation *rotationAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerRotationY];</span><br><span class="line">        rotationAnimation.duration = 0.01;</span><br><span class="line">        NSLog(@&quot;%f, %lu&quot;,location.x, (unsigned long)num);</span><br><span class="line">        POPBasicAnimation *moveAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionX];</span><br><span class="line">        moveAnimation.duration = 0.01;</span><br><span class="line">        </span><br><span class="line">        if ((location.x-num)&gt;350) &#123;</span><br><span class="line">            for (int i = 0; i&lt;4; i++) &#123;</span><br><span class="line">                POPBasicAnimation *rotation = [rotationAnimations objectAtIndex:i];</span><br><span class="line">                rotation.toValue = @(-(350)*percent+(2-i)*M_PI/6);</span><br><span class="line">                POPBasicAnimation *move = [moveAnimations objectAtIndex:i];</span><br><span class="line">                move.toValue = @(350-62+i*287);</span><br><span class="line">                </span><br><span class="line">                UIImageView *imgView = [imgViews objectAtIndex:i];</span><br><span class="line">                [imgView.layer pop_addAnimation:rotation forKey:@&quot;rotation&quot;];</span><br><span class="line">                [imgView.layer pop_addAnimation:move forKey:@&quot;move&quot;];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else if ((location.x-num)&lt;-350) &#123;</span><br><span class="line">            for (int i = 1; i&lt;5; i++) &#123;</span><br><span class="line">                POPBasicAnimation *rotation = [rotationAnimations objectAtIndex:i];</span><br><span class="line">                rotation.toValue = @(-(-350)*percent+(2-i)*M_PI/6);</span><br><span class="line">                POPBasicAnimation *move = [moveAnimations objectAtIndex:i];</span><br><span class="line">                move.toValue = @(-350-62+i*287);</span><br><span class="line">                </span><br><span class="line">                UIImageView *imgView = [imgViews objectAtIndex:i];</span><br><span class="line">                [imgView.layer pop_addAnimation:rotation forKey:@&quot;rotation&quot;];</span><br><span class="line">                [imgView.layer pop_addAnimation:move forKey:@&quot;move&quot;];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else if ((location.x - num)&gt;0) &#123;</span><br><span class="line">            for (int i = 0; i&lt;4; i++) &#123;</span><br><span class="line">                POPBasicAnimation *rotation = [rotationAnimations objectAtIndex:i];</span><br><span class="line">                rotation.toValue = @(-(location.x-num)*percent+(2-i)*M_PI/6);</span><br><span class="line">                POPBasicAnimation *move = [moveAnimations objectAtIndex:i];</span><br><span class="line">                move.toValue = @(location.x-num-62+i*287);</span><br><span class="line">                </span><br><span class="line">                UIImageView *imgView = [imgViews objectAtIndex:i];</span><br><span class="line">                [imgView.layer pop_addAnimation:rotation forKey:@&quot;rotation&quot;];</span><br><span class="line">                [imgView.layer pop_addAnimation:move forKey:@&quot;move&quot;];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else if ((location.x - num)&lt;=0) &#123;</span><br><span class="line">            for (int i = 1; i&lt;5; i++) &#123;</span><br><span class="line">                POPBasicAnimation *rotation = [rotationAnimations objectAtIndex:i];</span><br><span class="line">                rotation.toValue = @(-(location.x-num)*percent+(2-i)*M_PI/6);</span><br><span class="line">                POPBasicAnimation *move = [moveAnimations objectAtIndex:i];</span><br><span class="line">                move.toValue = @(location.x-num-62+i*287);</span><br><span class="line">                </span><br><span class="line">                UIImageView *imgView = [imgViews objectAtIndex:i];</span><br><span class="line">                [imgView.layer pop_addAnimation:rotation forKey:@&quot;rotation&quot;];</span><br><span class="line">                [imgView.layer pop_addAnimation:move forKey:@&quot;move&quot;];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) &#123;</span><br><span class="line">            for (int i = 0; i&lt;5; i++) &#123;</span><br><span class="line">                POPSpringAnimation *recoverAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerRotationY];</span><br><span class="line">                recoverAnimation.springBounciness = 18.0f;</span><br><span class="line">                recoverAnimation.dynamicsMass = 2.0f;</span><br><span class="line">                recoverAnimation.dynamicsTension = 200;</span><br><span class="line">                </span><br><span class="line">                POPSpringAnimation *recover = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionX];</span><br><span class="line">                recover.springBounciness = 18.0f;</span><br><span class="line">                recover.dynamicsMass = 2.0f;</span><br><span class="line">                recover.dynamicsTension = 200;</span><br><span class="line">                </span><br><span class="line">                [rotationEndAnimations addObject:recoverAnimation];</span><br><span class="line">                [moveEndAnimations addObject:recover];</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            POPSpringAnimation *recoverAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerRotationY];</span><br><span class="line">            recoverAnimation.springBounciness = 18.0f;</span><br><span class="line">            recoverAnimation.dynamicsMass = 2.0f;</span><br><span class="line">            recoverAnimation.dynamicsTension = 200;</span><br><span class="line">            </span><br><span class="line">            //            initialLocation = -img.frame.origin.x-img.frame.size.width/2;</span><br><span class="line">            if ((location.x-num)&gt;50) &#123;</span><br><span class="line">                for (int i = 0; i&lt;4; i++) &#123;</span><br><span class="line">                    POPBasicAnimation *rotation = [rotationEndAnimations objectAtIndex:i];</span><br><span class="line">                    rotation.toValue = @(-(287)*percent+(2-i)*M_PI/6);</span><br><span class="line">                    POPBasicAnimation *move = [moveEndAnimations objectAtIndex:i];</span><br><span class="line">                    move.toValue = @(287-62+i*287);</span><br><span class="line">                    </span><br><span class="line">                    UIImageView *imgView = [imgViews objectAtIndex:i];</span><br><span class="line">                    [imgView.layer pop_addAnimation:rotation forKey:@&quot;rotation&quot;];</span><br><span class="line">                    [imgView.layer pop_addAnimation:move forKey:@&quot;move&quot;];</span><br><span class="line">                &#125;</span><br><span class="line">                [self moveRight];</span><br><span class="line">                </span><br><span class="line">            &#125; else if ((location.x-num)&lt;-50) &#123;</span><br><span class="line">                for (int i = 1; i&lt;5; i++) &#123;</span><br><span class="line">                    POPBasicAnimation *rotation = [rotationEndAnimations objectAtIndex:i];</span><br><span class="line">                    rotation.toValue = @(-(-287)*percent+(2-i)*M_PI/6);</span><br><span class="line">                    POPBasicAnimation *move = [moveEndAnimations objectAtIndex:i];</span><br><span class="line">                    move.toValue = @(-287-62+i*287);</span><br><span class="line">                    </span><br><span class="line">                    UIImageView *imgView = [imgViews objectAtIndex:i];</span><br><span class="line">                    [imgView.layer pop_addAnimation:rotation forKey:@&quot;rotation&quot;];</span><br><span class="line">                    [imgView.layer pop_addAnimation:move forKey:@&quot;move&quot;];</span><br><span class="line">                &#125;</span><br><span class="line">                [self moveLeft];</span><br><span class="line">                </span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                for (int i = 0; i&lt;5; i++) &#123;</span><br><span class="line">                    POPBasicAnimation *rotation = [rotationEndAnimations objectAtIndex:i];</span><br><span class="line">                    rotation.toValue = @((2-i)*M_PI/6);</span><br><span class="line">                    POPBasicAnimation *move = [moveEndAnimations objectAtIndex:i];</span><br><span class="line">                    move.toValue = @(-62+i*287);</span><br><span class="line">                    </span><br><span class="line">                    UIImageView *imgView = [imgViews objectAtIndex:i];</span><br><span class="line">                    [imgView.layer pop_addAnimation:rotation forKey:@&quot;rotation&quot;];</span><br><span class="line">                    [imgView.layer pop_addAnimation:move forKey:@&quot;move&quot;];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于重复的动画过多，这里只解释其中两种：<br>初始化旋转以及平移函数,<em>duration</em>代表持续时间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POPBasicAnimation *rotationAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerRotationY];</span><br><span class="line">rotationAnimation.duration = 0.01;</span><br><span class="line">POPBasicAnimation *moveAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionX];</span><br><span class="line">moveAnimation.duration = 0.01;</span><br></pre></td></tr></table></figure>
+<p>通过<em>position.x</em>与<em>num</em>的差值，获得拖动的x轴方向距离。根据该距离设置好旋转动画旋转的角度，以及平移动画平移的距离。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rotation.toValue = @(-(location.x-num)*percent+(2-i)*M_PI/6);</span><br><span class="line">move.toValue = @(location.x-num-62+i*287);</span><br></pre></td></tr></table></figure>
+<p>最后将动画绑定在图片上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[imgView.layer pop_addAnimation:rotation forKey:@&quot;rotation&quot;];</span><br><span class="line">[imgView.layer pop_addAnimation:move forKey:@&quot;move&quot;];</span><br></pre></td></tr></table></figure>
+<p>这样一个图片的动画就完成了。最后推广在到所有图片上，并为拖动距离添加一定的阈值即可完成动画。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;我利用了POP库制作了简单的广告展示的翻页效果：&lt;br&gt;&lt;figure class=&quot;image-bubble&quot;&gt;
+                &lt;div class=&quot;img-lightbox&quot;&gt;
+                    &lt;div class=&quot;overlay&quot;&gt;&lt;/div&gt;
+                    &lt;img src=&quot;/2016/07/26/制作POP翻页动画/yanshi.gif&quot; alt=&quot;yanshi&quot; title=&quot;&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;image-caption&quot;&gt;yanshi&lt;/div&gt;
+            &lt;/figure&gt;&lt;br&gt;&lt;strong&gt;源码在&lt;a href=&quot;https://github.com/Fuzesunshine/3DTest&quot;&gt;这里&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&quot;大致思路&quot;&gt;&lt;a href=&quot;#大致思路&quot; class=&quot;headerlink&quot; title=&quot;大致思路&quot;&gt;&lt;/a&gt;大致思路&lt;/h2&gt;&lt;p&gt;首先简单分析一下动画效果：&lt;br&gt;我们使用了旋转以及平移两个动画效果，通过动图可以看到：通过手指拖动(pan)，图片在平移的同时绕着自身中轴线旋转。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="learning" scheme="http://yoursite.com/categories/learning/"/>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="POP" scheme="http://yoursite.com/tags/POP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>将cocos工程加入到iOS工程中</title>
+    <link href="http://yoursite.com/2016/07/05/%E5%B0%86cocos%E5%B7%A5%E7%A8%8B%E5%8A%A0%E5%85%A5%E5%88%B0iOS%E5%B7%A5%E7%A8%8B%E4%B8%AD/"/>
+    <id>http://yoursite.com/2016/07/05/将cocos工程加入到iOS工程中/</id>
+    <published>2016-07-05T12:43:50.000Z</published>
+    <updated>2017-06-02T02:28:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>本文讨论的是这样一种情况：一个iOS应用中有一个游戏，iOS程序与游戏是单独开发，并且游戏是用cocos2dx引擎。这样在开发结束时，我们需要将这两个工程合到一起，换句话说就是讲cocos游戏嵌入到iOS应用中。</p>
+<h2 id="大致思路"><a href="#大致思路" class="headerlink" title="大致思路"></a>大致思路</h2><p>我的解决方案的大致思路是这样的：将cocos引擎添加到iOS工程中，在合适的位置进入cocos游戏界面。</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="向iOS工程中加入文件"><a href="#向iOS工程中加入文件" class="headerlink" title="向iOS工程中加入文件"></a>向iOS工程中加入文件</h3><p>首先按cocos官网上的方法生成cocos工程，向iOS工程中添加cocos工程中的Classes/、proj.ios_mac/ios/、resources复制到iOS工程的文件夹中。向工程中添加文件：Classes/、ios/、cocos2d/build/cocos2d_libs.xcodeproj。<br><a id="more"></a></p>
+<h3 id="更改工程设置"><a href="#更改工程设置" class="headerlink" title="更改工程设置"></a>更改工程设置</h3><p>1.向工程中添加如图所示的库<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://i2.piimg.com/568443/bf0194e50b26bd19.png" alt="Markdown" title="">
+                </div>
+                <div class="image-caption">Markdown</div>
+            </figure><br>2.向 Building Setting&gt;Header Search Paths 中添加项<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://i2.piimg.com/568443/906b2df33c673389.png" alt="Markdown" title="">
+                </div>
+                <div class="image-caption">Markdown</div>
+            </figure><br>3.在 Building Setting 中更改工程设置<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://i2.piimg.com/568443/d89b38ff2fa46a2b.png" alt="Markdown" title="">
+                </div>
+                <div class="image-caption">Markdown</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://i4.piimg.com/568443/59b00a328c3dfcc9.png" alt="Markdown" title="">
+                </div>
+                <div class="image-caption">Markdown</div>
+            </figure><br>4.删除原工程的 main.m、AppDelegate.h/m 文件</p>
+<h3 id="更改工程入口"><a href="#更改工程入口" class="headerlink" title="更改工程入口"></a>更改工程入口</h3><p>具体设置参照<a href="http://blog.csdn.net/crayondeng/article/details/16828555" target="_blank" rel="external">博客</a>，大致的思路就是修改cocos工程的入口AppController文件，在需要嵌入游戏的位置初始化RootViewController即可。</p>
+<p><strong>合并后的工程在<a href="https://github.com/Fuzesunshine/CocosTest" target="_blank" rel="external">这里</a>.</strong></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文讨论的是这样一种情况：一个iOS应用中有一个游戏，iOS程序与游戏是单独开发，并且游戏是用cocos2dx引擎。这样在开发结束时，我们需要将这两个工程合到一起，换句话说就是讲cocos游戏嵌入到iOS应用中。&lt;/p&gt;
+&lt;h2 id=&quot;大致思路&quot;&gt;&lt;a href=&quot;#大致思路&quot; class=&quot;headerlink&quot; title=&quot;大致思路&quot;&gt;&lt;/a&gt;大致思路&lt;/h2&gt;&lt;p&gt;我的解决方案的大致思路是这样的：将cocos引擎添加到iOS工程中，在合适的位置进入cocos游戏界面。&lt;/p&gt;
+&lt;h2 id=&quot;步骤&quot;&gt;&lt;a href=&quot;#步骤&quot; class=&quot;headerlink&quot; title=&quot;步骤&quot;&gt;&lt;/a&gt;步骤&lt;/h2&gt;&lt;h3 id=&quot;向iOS工程中加入文件&quot;&gt;&lt;a href=&quot;#向iOS工程中加入文件&quot; class=&quot;headerlink&quot; title=&quot;向iOS工程中加入文件&quot;&gt;&lt;/a&gt;向iOS工程中加入文件&lt;/h3&gt;&lt;p&gt;首先按cocos官网上的方法生成cocos工程，向iOS工程中添加cocos工程中的Classes/、proj.ios_mac/ios/、resources复制到iOS工程的文件夹中。向工程中添加文件：Classes/、ios/、cocos2d/build/cocos2d_libs.xcodeproj。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="learning" scheme="http://yoursite.com/categories/learning/"/>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="cocos2dx" scheme="http://yoursite.com/tags/cocos2dx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>开始我的hexo博客</title>
+    <link href="http://yoursite.com/2016/03/23/%E5%BC%80%E5%A7%8B%E6%88%91%E7%9A%84hexo%E5%8D%9A%E5%AE%A2/"/>
+    <id>http://yoursite.com/2016/03/23/开始我的hexo博客/</id>
+    <published>2016-03-23T08:05:00.000Z</published>
+    <updated>2017-06-02T02:28:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>很早就有写博客的想法了，今天终于用hexo搭起了自己的博客，记录一下过程：</p>
+<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h2><p>使用nvm安装Node.js</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget -qO- https://raw.github.com/creationix/nvm/master/install.sh | sh</span><br></pre></td></tr></table></figure>
+<p>安装完成后，重启终端并执行下列命令即可安装 Node.js</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm install 4</span><br></pre></td></tr></table></figure>
+<p>安装Hexo</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>安装部署到git的插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<h2 id="配置Github"><a href="#配置Github" class="headerlink" title="配置Github"></a>配置Github</h2><p>创建名为<code>yourname.github.io</code>的repository<br>开启gh-pages功能</p>
+<h2 id="配置hexo"><a href="#配置hexo" class="headerlink" title="配置hexo"></a>配置hexo</h2><p>按照<a href="https://hexo.io/zh-cn/docs/setup.html" target="_blank" rel="external">hexo官网</a>上的配置步骤进行<br><strong>注意配置_config.yml中的language选项时，需要看主题中language/里的语言文件</strong></p>
+<h2 id="使用Next主题"><a href="#使用Next主题" class="headerlink" title="使用Next主题"></a>使用Next主题</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> theme/</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next.git</span><br><span class="line">$ vim ../_config.yml</span><br></pre></td></tr></table></figure>
+<p>将<code>theme:</code>改为<code>theme: hexo-theme-next</code></p>
+<h2 id="部署到Github"><a href="#部署到Github" class="headerlink" title="部署到Github"></a>部署到Github</h2><p>修改配置完成后执行下列语句，生成代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
+<p>执行下列语句，部署到Github上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;很早就有写博客的想法了，今天终于用hexo搭起了自己的博客，记录一下过程：&lt;/p&gt;
+&lt;h2 id=&quot;安装hexo&quot;&gt;&lt;a href=&quot;#安装hexo&quot; class=&quot;headerlink&quot; title=&quot;安装hexo&quot;&gt;&lt;/a&gt;安装hexo&lt;/h2&gt;&lt;p&gt;使用nvm安装Node.js&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ wget -qO- https://raw.github.com/creationix/nvm/master/install.sh | sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;安装完成后，重启终端并执行下列命令即可安装 Node.js&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ nvm install 4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;安装Hexo&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ npm install -g hexo-cli&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="learning" scheme="http://yoursite.com/categories/learning/"/>
+    
+    
+      <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
+    
+  </entry>
+  
+</feed>
