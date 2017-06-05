@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-06-02T02:28:37.000Z</updated>
+  <updated>2017-06-05T11:36:34.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,12 +20,14 @@
     <link href="http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/"/>
     <id>http://yoursite.com/2017/03/20/tensorflow-train-learning-rate-decay/</id>
     <published>2017-03-20T14:01:43.000Z</published>
-    <updated>2017-06-02T02:28:37.000Z</updated>
+    <updated>2017-06-05T11:36:34.000Z</updated>
     
     <content type="html"><![CDATA[<p>学习udacity/3_regularization.ipynb时，发现<code>tf.train.exponential_decay()</code>函数，阅读源码，大概知道意思：</p>
 <p>源码截取如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exponential_decay</span><span class="params">(learning_rate, global_step, decay_steps, decay_rate,</span><br><span class="line">                      staircase=False, name=None)</span>:</span></span><br><span class="line">  <span class="keyword">if</span> global_step <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">"global_step is required for exponential_decay."</span>)</span><br><span class="line">  <span class="keyword">with</span> ops.name_scope(name, <span class="string">"ExponentialDecay"</span>,</span><br><span class="line">                      [learning_rate, global_step,</span><br><span class="line">                       decay_steps, decay_rate]) <span class="keyword">as</span> name:</span><br><span class="line">    learning_rate = ops.convert_to_tensor(learning_rate, name=<span class="string">"learning_rate"</span>)</span><br><span class="line">    dtype = learning_rate.dtype</span><br><span class="line">    global_step = math_ops.cast(global_step, dtype)</span><br><span class="line">    decay_steps = math_ops.cast(decay_steps, dtype)</span><br><span class="line">    decay_rate = math_ops.cast(decay_rate, dtype)</span><br><span class="line">    p = global_step / decay_steps</span><br><span class="line">    <span class="keyword">if</span> staircase:</span><br><span class="line">      p = math_ops.floor(p)</span><br><span class="line">    <span class="keyword">return</span> math_ops.multiply(learning_rate, math_ops.pow(decay_rate, p),</span><br><span class="line">                             name=name)</span><br></pre></td></tr></table></figure>
-<p>看注释及代码可知<br>$$decayed\ learning\ rate = learning\ rate \times decay\ rate ^ {global\ step / decay\ steps}$$<br>即每隔<code>global_step</code>步进行一次递减，递减的方式为上一个<code>learing_rate</code>乘上<code>decay_rate</code>。由此可见，使用该方法下降<code>learning_rate</code>可使其迅速减小。</p>
+<p>看注释及代码可知</p>
+<p>$$decayed\ learning\ rate = learning\ rate \times decay\ rate ^ {global\ step / decay\ steps}$$</p>
+<p>即每隔<code>global_step</code>步进行一次递减，递减的方式为上一个<code>learing_rate</code>乘上<code>decay_rate</code>。由此可见，使用该方法下降<code>learning_rate</code>可使其迅速减小。</p>
 <p>同时在Problem 4中，我使用了5层神经网络，用了L2正则以及dropout。我发现增加网络的层数并没有显著提高正确率，增加<code>batch_size</code>却可以提高正确率至96.4%。</p>
 ]]></content>
     
