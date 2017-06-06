@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-06-06T08:33:59.000Z</updated>
+  <updated>2017-06-06T13:01:01.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://yoursite.com/2017/06/05/music-note-detection-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
     <id>http://yoursite.com/2017/06/05/music-note-detection-论文阅读/</id>
     <published>2017-06-05T12:37:08.000Z</published>
-    <updated>2017-06-06T08:33:59.000Z</updated>
+    <updated>2017-06-06T13:01:01.000Z</updated>
     
-    <content type="html"><![CDATA[<p>本文是<em>NOTE ONSET DETECTION IN MUSICAL SIGNALS VIA NEURAL–NETWORK–BASED MULTI–ODF FUSION</em>的阅读笔记。本文主要将ODF：onset detection function与神经网络结合起来，做music note onset的检测。</p>
+    <content type="html"><![CDATA[<p>本文是<a href="https://github.com/Fuzesunshine/learningPapers/blob/master/MusicTranscription/%5BInternational%20Journal%20of%20Applied%20Mathematics%20and%20Computer%20Science%5D%20Note%20onset%20detection%20in%20musical%20signals%20via%20neuralnetworkbased%20multiODF%20fusion.pdf" target="_blank" rel="external">NOTE ONSET DETECTION IN MUSICAL SIGNALS VIA NEURAL–NETWORK–BASED MULTI–ODF FUSION</a>的阅读笔记。本文主要将ODF：onset detection function与神经网络结合起来，做music note onset的检测。</p>
 <hr>
 <h1 id="开始事件检测函数ODF：Onset-detection-function"><a href="#开始事件检测函数ODF：Onset-detection-function" class="headerlink" title="开始事件检测函数ODF：Onset detection function"></a>开始事件检测函数ODF：Onset detection function</h1><h2 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h2><p>本文的方法基本上是基于STFT变换，公式$(1)$是基于能量变化做的检测：<br>$$ \begin{equation}<br>SF(n) = \sum_{k}hwr(|X_k(n)|-|X_k(n-1)|)<br>\label{eq:1}<br>\end{equation}$$<br>其中$X_k(n)$是第n帧的STFT的第k个值，这个值为复数代表幅度与相位信息这里取绝对值，只考虑能量信息，且：<br>$$\begin{equation}<br>hwr(x) = \frac{x+|x|}{2}<br>\label{eq:2}<br>\end{equation}$$<br>$hwr(x)$即为半波整流函数（half-wave rectifier）仅当$x$为正数时，才有值。这样既可检测能量的突然增加。</p>
 <h2 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h2><p>相位的变化可用式$(3)$表示：<br>$$\begin{equation}<br>d\varphi_k(n) = princarg[\varphi_k(n)-2\varphi_k(n-1)+\varphi_k(n-2)]<br>\label{eq:3}<br>\end{equation}$$</p>
@@ -81,7 +81,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;本文是&lt;em&gt;NOTE ONSET DETECTION IN MUSICAL SIGNALS VIA NEURAL–NETWORK–BASED MULTI–ODF FUSION&lt;/em&gt;的阅读笔记。本文主要将ODF：onset detection function与神经网络
+      &lt;p&gt;本文是&lt;a href=&quot;https://github.com/Fuzesunshine/learningPapers/blob/master/MusicTranscription/%5BInternational%20Journal%20of%20Applied%20Mat
     
     </summary>
     
