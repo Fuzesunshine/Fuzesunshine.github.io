@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-06-05T11:36:34.000Z</updated>
+  <updated>2017-06-06T08:33:59.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,87 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>music note onset detection 论文阅读</title>
+    <link href="http://yoursite.com/2017/06/05/music-note-detection-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+    <id>http://yoursite.com/2017/06/05/music-note-detection-论文阅读/</id>
+    <published>2017-06-05T12:37:08.000Z</published>
+    <updated>2017-06-06T08:33:59.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>本文是<em>NOTE ONSET DETECTION IN MUSICAL SIGNALS VIA NEURAL–NETWORK–BASED MULTI–ODF FUSION</em>的阅读笔记。本文主要将ODF：onset detection function与神经网络结合起来，做music note onset的检测。</p>
+<hr>
+<h1 id="开始事件检测函数ODF：Onset-detection-function"><a href="#开始事件检测函数ODF：Onset-detection-function" class="headerlink" title="开始事件检测函数ODF：Onset detection function"></a>开始事件检测函数ODF：Onset detection function</h1><h2 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h2><p>本文的方法基本上是基于STFT变换，公式$(1)$是基于能量变化做的检测：<br>$$ \begin{equation}<br>SF(n) = \sum_{k}hwr(|X_k(n)|-|X_k(n-1)|)<br>\label{eq:1}<br>\end{equation}$$<br>其中$X_k(n)$是第n帧的STFT的第k个值，这个值为复数代表幅度与相位信息这里取绝对值，只考虑能量信息，且：<br>$$\begin{equation}<br>hwr(x) = \frac{x+|x|}{2}<br>\label{eq:2}<br>\end{equation}$$<br>$hwr(x)$即为半波整流函数（half-wave rectifier）仅当$x$为正数时，才有值。这样既可检测能量的突然增加。</p>
+<h2 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h2><p>相位的变化可用式$(3)$表示：<br>$$\begin{equation}<br>d\varphi_k(n) = princarg[\varphi_k(n)-2\varphi_k(n-1)+\varphi_k(n-2)]<br>\label{eq:3}<br>\end{equation}$$</p>
+<p>在$WPD(n)$同时考虑了<strong>幅度和相位</strong>的信息，故：<br>$$\begin{equation}<br>WPD(n) = \sum_{k}|hwr(|X_k(n)|-|X_k(n-1)|)\cdot d\varphi_k(n)<br>\label{eq:4}<br>\end{equation}$$</p>
+<h2 id="方法3"><a href="#方法3" class="headerlink" title="方法3"></a>方法3</h2><p>一种基于相位谱的更复杂的方法，他们使用相位偏差系数来构建每个STFT帧的相位偏移的二维直方图。 然后可以用一些统计特征来计算结果（例如，峰度）：<br>$$\begin{equation}<br>PHK(n) = Kurt(h(d\varphi_k(n)))<br>\label{eq:5}<br>\end{equation}$$</p>
+<h2 id="方法4"><a href="#方法4" class="headerlink" title="方法4"></a>方法4</h2><p>本方法直接<strong>在复频谱域</strong>进行计算，兼顾了相位与幅度：<br>$$\begin{equation}<br>CD(n) = \sum_{k}|\widehat{S}_k(n)-S_k(n)|<br>\label{eq:6}<br>\end{equation}$$<br>其中$|\widehat{S}_k(n)-S_k(n)|$表示第n个STFT帧第k个频率仓的<strong>期望</strong>和实际之间的复数差的幅度，其中：<br>$$\begin{equation}<br>\widehat{S}_k(n) = |S_k(n-1)|e^{j(2\varphi_k(n-1)-\varphi_k(n-2))}<br>\label{eq:7}<br>\end{equation}$$<br>以上三种方法皆为传统的ODF，在计算后加上固定的阈值即可检测onset。</p>
+<hr>
+<h1 id="混合模型"><a href="#混合模型" class="headerlink" title="混合模型"></a>混合模型</h1><p>如图所示即为混合模型的整体架构：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/05/music-note-detection-论文阅读/1.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<p>模型的输入为：<br>$$\begin{equation}<br>\boldsymbol x(n) = [\boldsymbol v_S(n),\boldsymbol v_W(n),\boldsymbol v_P(n),\boldsymbol v_C(n)]<br>\label{eq:8}<br>\end{equation}$$</p>
+<p>其中：<br>$$\begin{equation}<br>\boldsymbol v_{S}(n) = [SF(n-2),\,SF(n-1),\,SF(n),\,SF(n+1),\,SF(n+2),\,\overline{SF}(n)]<br>\label{eq:9}<br>\end{equation}$$</p>
+<p>其中：<br>$$\begin{equation}<br>\overline{SF}(n) = \sum_{k=n-\lfloor n_m/2\rfloor}^{n+\lfloor n_m/2\rfloor}SF(k) \qquad n_m = 21<br>\label{eq:10}<br>\end{equation}$$</p>
+<p>模型的输出为$P(onset\,\, \vert n=k)$。<strong>由于onset时刻的两边也可以但测到onset</strong>，故label的生成采用<strong>软条件（soft condition）</strong>，其中网络的目标输出值为以第n帧为中心的<strong>高斯曲线</strong>。 在一些简化和舍入之后，将出现在第n帧中的开始的连续目标值设置为:<br>\begin{equation}<br>\begin{aligned}<br>t(n) &amp;= 0.75, \\<br>t(n\pm 1) &amp;= 0.55,\\<br>t(n\pm 2) &amp;= 0.35,\\<br>t(n\pm 3) &amp;= 0.25,\\<br>t(n\pm 4) &amp;= 0.25,\\<br>\end{aligned}<br>\end{equation}<br>曲线如图所示：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/05/music-note-detection-论文阅读/2.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>神经网络的输出也被当成另一个ODF的输入，这个ODF用峰值检测以及固定的阈值检测onset的时间点。</p>
+<hr>
+<h1 id="模型训练及结果"><a href="#模型训练及结果" class="headerlink" title="模型训练及结果"></a>模型训练及结果</h1><p>在分割训练集与测试集时，文章采用两种方案：</p>
+<blockquote>
+<p>每次训练时，都移除一种乐器，用其余的16中乐器进行训练，被移除的乐器做测试集用，依次重复17次。<br>把单独的音频文件分成10分，每一份都依次做交叉验证集使用，其余9份做训练集用。</p>
+</blockquote>
+<p>以下分别为两种方案的结果：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/05/music-note-detection-论文阅读/3.png" alt="scheme 1" title="">
+                </div>
+                <div class="image-caption">scheme 1</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/05/music-note-detection-论文阅读/4.png" alt="scheme 2" title="">
+                </div>
+                <div class="image-caption">scheme 2</div>
+            </figure><br>注意：有的乐器的特性与主流的乐器不同，其中一个严重的问题就在于单簧管和萨克斯的实际onset时刻会比记录的ground true晚很多，降低了第一种方案训练的准确性。各乐器的<strong>最佳偏移量</strong>如下图所示，评价标准为<strong>F-measure</strong>。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/05/music-note-detection-论文阅读/5.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>文章通过试验，找到了较好的神经网络输出的阈值以及特征值的子集，最终的结果为：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/05/music-note-detection-论文阅读/6.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文是&lt;em&gt;NOTE ONSET DETECTION IN MUSICAL SIGNALS VIA NEURAL–NETWORK–BASED MULTI–ODF FUSION&lt;/em&gt;的阅读笔记。本文主要将ODF：onset detection function与神经网络
+    
+    </summary>
+    
+    
+      <category term="paper reading" scheme="http://yoursite.com/tags/paper-reading/"/>
+    
+      <category term="neural network" scheme="http://yoursite.com/tags/neural-network/"/>
+    
+      <category term="music note detection" scheme="http://yoursite.com/tags/music-note-detection/"/>
+    
+      <category term="ODF" scheme="http://yoursite.com/tags/ODF/"/>
+    
+  </entry>
   
   <entry>
     <title>tensorflow.train.learning_rate_decay()</title>

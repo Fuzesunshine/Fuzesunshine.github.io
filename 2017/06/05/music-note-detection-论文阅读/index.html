@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    
+    
+    
+    <title>music note onset detection 论文阅读 | fuze blog | 专心学术，专心看书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#111F1B">
+    
+    
+    <meta name="keywords" content="paper reading,neural network,music note detection,ODF">
+    <meta name="description" content="本文是NOTE ONSET DETECTION IN MUSICAL SIGNALS VIA NEURAL–NETWORK–BASED MULTI–ODF FUSION的阅读笔记。本文主要将ODF：onset detection function与神经网络结合起来，做music note onset的检测。
+
+开始事件检测函数ODF：Onset detection function方法1本文的方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="music note onset detection 论文阅读">
+<meta property="og:url" content="http://yoursite.com/2017/06/05/music-note-detection-论文阅读/index.html">
+<meta property="og:site_name" content="fuze blog">
+<meta property="og:description" content="本文是NOTE ONSET DETECTION IN MUSICAL SIGNALS VIA NEURAL–NETWORK–BASED MULTI–ODF FUSION的阅读笔记。本文主要将ODF：onset detection function与神经网络结合起来，做music note onset的检测。
+
+开始事件检测函数ODF：Onset detection function方法1本文的方法">
+<meta property="og:image" content="http://yoursite.com/2017/06/05/music-note-detection-论文阅读/1.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/05/music-note-detection-论文阅读/2.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/05/music-note-detection-论文阅读/3.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/05/music-note-detection-论文阅读/4.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/05/music-note-detection-论文阅读/5.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/05/music-note-detection-论文阅读/6.png">
+<meta property="og:updated_time" content="2017-06-06T08:33:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="music note onset detection 论文阅读">
+<meta name="twitter:description" content="本文是NOTE ONSET DETECTION IN MUSICAL SIGNALS VIA NEURAL–NETWORK–BASED MULTI–ODF FUSION的阅读笔记。本文主要将ODF：onset detection function与神经网络结合起来，做music note onset的检测。
+
+开始事件检测函数ODF：Onset detection function方法1本文的方法">
+<meta name="twitter:image" content="http://yoursite.com/2017/06/05/music-note-detection-论文阅读/1.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="fuze blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.7">
+    <script>window.lazyScripts=[]</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fuze</h5>
+          <a href="mailto:fuzecong@gmail.com" title="fuzecong@gmail.com" class="mail">fuzecong@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/fuzesunshine" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://jialin.wang" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                cater.log
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">music note onset detection 论文阅读</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">music note onset detection 论文阅读</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-06-05T12:37:08.000Z" itemprop="datePublished" class="page-time">
+  2017-06-05
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#开始事件检测函数ODF：Onset-detection-function"><span class="post-toc-number">1.</span> <span class="post-toc-text">开始事件检测函数ODF：Onset detection function</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方法1"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">方法1</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方法2"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">方法2</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方法3"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">方法3</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方法4"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">方法4</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#混合模型"><span class="post-toc-number">2.</span> <span class="post-toc-text">混合模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#模型训练及结果"><span class="post-toc-number">3.</span> <span class="post-toc-text">模型训练及结果</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-music-note-detection-论文阅读"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">music note onset detection 论文阅读</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-06-05 20:37:08" datetime="2017-06-05T12:37:08.000Z"  itemprop="datePublished">2017-06-05</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>本文是<em>NOTE ONSET DETECTION IN MUSICAL SIGNALS VIA NEURAL–NETWORK–BASED MULTI–ODF FUSION</em>的阅读笔记。本文主要将ODF：onset detection function与神经网络结合起来，做music note onset的检测。</p>
+<hr>
+<h1 id="开始事件检测函数ODF：Onset-detection-function"><a href="#开始事件检测函数ODF：Onset-detection-function" class="headerlink" title="开始事件检测函数ODF：Onset detection function"></a>开始事件检测函数ODF：Onset detection function</h1><h2 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h2><p>本文的方法基本上是基于STFT变换，公式$(1)$是基于能量变化做的检测：<br>$$ \begin{equation}<br>SF(n) = \sum_{k}hwr(|X_k(n)|-|X_k(n-1)|)<br>\label{eq:1}<br>\end{equation}$$<br>其中$X_k(n)$是第n帧的STFT的第k个值，这个值为复数代表幅度与相位信息这里取绝对值，只考虑能量信息，且：<br>$$\begin{equation}<br>hwr(x) = \frac{x+|x|}{2}<br>\label{eq:2}<br>\end{equation}$$<br>$hwr(x)$即为半波整流函数（half-wave rectifier）仅当$x$为正数时，才有值。这样既可检测能量的突然增加。</p>
+<h2 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h2><p>相位的变化可用式$(3)$表示：<br>$$\begin{equation}<br>d\varphi_k(n) = princarg[\varphi_k(n)-2\varphi_k(n-1)+\varphi_k(n-2)]<br>\label{eq:3}<br>\end{equation}$$</p>
+<p>在$WPD(n)$同时考虑了<strong>幅度和相位</strong>的信息，故：<br>$$\begin{equation}<br>WPD(n) = \sum_{k}|hwr(|X_k(n)|-|X_k(n-1)|)\cdot d\varphi_k(n)<br>\label{eq:4}<br>\end{equation}$$</p>
+<h2 id="方法3"><a href="#方法3" class="headerlink" title="方法3"></a>方法3</h2><p>一种基于相位谱的更复杂的方法，他们使用相位偏差系数来构建每个STFT帧的相位偏移的二维直方图。 然后可以用一些统计特征来计算结果（例如，峰度）：<br>$$\begin{equation}<br>PHK(n) = Kurt(h(d\varphi_k(n)))<br>\label{eq:5}<br>\end{equation}$$</p>
+<h2 id="方法4"><a href="#方法4" class="headerlink" title="方法4"></a>方法4</h2><p>本方法直接<strong>在复频谱域</strong>进行计算，兼顾了相位与幅度：<br>$$\begin{equation}<br>CD(n) = \sum_{k}|\widehat{S}_k(n)-S_k(n)|<br>\label{eq:6}<br>\end{equation}$$<br>其中$|\widehat{S}_k(n)-S_k(n)|$表示第n个STFT帧第k个频率仓的<strong>期望</strong>和实际之间的复数差的幅度，其中：<br>$$\begin{equation}<br>\widehat{S}_k(n) = |S_k(n-1)|e^{j(2\varphi_k(n-1)-\varphi_k(n-2))}<br>\label{eq:7}<br>\end{equation}$$<br>以上三种方法皆为传统的ODF，在计算后加上固定的阈值即可检测onset。</p>
+<hr>
+<h1 id="混合模型"><a href="#混合模型" class="headerlink" title="混合模型"></a>混合模型</h1><p>如图所示即为混合模型的整体架构：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/05/music-note-detection-论文阅读/1.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<p>模型的输入为：<br>$$\begin{equation}<br>\boldsymbol x(n) = [\boldsymbol v_S(n),\boldsymbol v_W(n),\boldsymbol v_P(n),\boldsymbol v_C(n)]<br>\label{eq:8}<br>\end{equation}$$</p>
+<p>其中：<br>$$\begin{equation}<br>\boldsymbol v_{S}(n) = [SF(n-2),\,SF(n-1),\,SF(n),\,SF(n+1),\,SF(n+2),\,\overline{SF}(n)]<br>\label{eq:9}<br>\end{equation}$$</p>
+<p>其中：<br>$$\begin{equation}<br>\overline{SF}(n) = \sum_{k=n-\lfloor n_m/2\rfloor}^{n+\lfloor n_m/2\rfloor}SF(k) \qquad n_m = 21<br>\label{eq:10}<br>\end{equation}$$</p>
+<p>模型的输出为$P(onset\,\, \vert n=k)$。<strong>由于onset时刻的两边也可以但测到onset</strong>，故label的生成采用<strong>软条件（soft condition）</strong>，其中网络的目标输出值为以第n帧为中心的<strong>高斯曲线</strong>。 在一些简化和舍入之后，将出现在第n帧中的开始的连续目标值设置为:<br>\begin{equation}<br>\begin{aligned}<br>t(n) &amp;= 0.75, \\<br>t(n\pm 1) &amp;= 0.55,\\<br>t(n\pm 2) &amp;= 0.35,\\<br>t(n\pm 3) &amp;= 0.25,\\<br>t(n\pm 4) &amp;= 0.25,\\<br>\end{aligned}<br>\end{equation}<br>曲线如图所示：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/05/music-note-detection-论文阅读/2.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>神经网络的输出也被当成另一个ODF的输入，这个ODF用峰值检测以及固定的阈值检测onset的时间点。</p>
+<hr>
+<h1 id="模型训练及结果"><a href="#模型训练及结果" class="headerlink" title="模型训练及结果"></a>模型训练及结果</h1><p>在分割训练集与测试集时，文章采用两种方案：</p>
+<blockquote>
+<p>每次训练时，都移除一种乐器，用其余的16中乐器进行训练，被移除的乐器做测试集用，依次重复17次。<br>把单独的音频文件分成10分，每一份都依次做交叉验证集使用，其余9份做训练集用。</p>
+</blockquote>
+<p>以下分别为两种方案的结果：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/05/music-note-detection-论文阅读/3.png" alt="scheme 1" title="">
+                </div>
+                <div class="image-caption">scheme 1</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/05/music-note-detection-论文阅读/4.png" alt="scheme 2" title="">
+                </div>
+                <div class="image-caption">scheme 2</div>
+            </figure><br>注意：有的乐器的特性与主流的乐器不同，其中一个严重的问题就在于单簧管和萨克斯的实际onset时刻会比记录的ground true晚很多，降低了第一种方案训练的准确性。各乐器的<strong>最佳偏移量</strong>如下图所示，评价标准为<strong>F-measure</strong>。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/05/music-note-detection-论文阅读/5.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>文章通过试验，找到了较好的神经网络输出的阈值以及特征值的子集，最终的结果为：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/05/music-note-detection-论文阅读/6.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-06-06T08:33:59.000Z" itemprop="dateUpdated">2017-06-06 16:33:59</time>
+</span><br>
+
+
+        
+        Thanks for reading.
+        
+    </div>
+    <footer>
+        <a href="http://yoursite.com">
+            <img src="/img/avatar.png" alt="fuze">
+            fuze
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ODF/">ODF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/music-note-detection/">music note detection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neural-network/">neural network</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paper-reading/">paper reading</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2017/06/05/music-note-detection-论文阅读/&title=《music note onset detection 论文阅读》 — fuze blog&pic=http://yoursite.com/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/06/05/music-note-detection-论文阅读/&title=《music note onset detection 论文阅读》 — fuze blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/06/05/music-note-detection-论文阅读/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《music note onset detection 论文阅读》 — fuze blog&url=http://yoursite.com/2017/06/05/music-note-detection-论文阅读/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2017/06/05/music-note-detection-论文阅读/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/03/20/tensorflow-train-learning-rate-decay/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">tensorflow.train.learning_rate_decay()</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Fuzesunshine',
+            repo: 'BlogComment',
+            oauth: {
+                client_id: '716b70c2b7b3de6f7f89',
+                client_secret: '71a4d4ab3abf26c245fe1b2c35adc3d79b75f5ba',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>fuze &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2017/06/05/music-note-detection-论文阅读/&title=《music note onset detection 论文阅读》 — fuze blog&pic=http://yoursite.com/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/06/05/music-note-detection-论文阅读/&title=《music note onset detection 论文阅读》 — fuze blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/06/05/music-note-detection-论文阅读/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《music note onset detection 论文阅读》 — fuze blog&url=http://yoursite.com/2017/06/05/music-note-detection-论文阅读/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2017/06/05/music-note-detection-论文阅读/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACyUlEQVR42u3aQW7jMBAEwPz/0wmQ28KRtntIyj6UToJhSyoa8NA98/UVH9+/x+v563tej+Sd9/e6v9qGAw8PD2/06PcPl5xfXfPq0duluWdfLgEeHh7eMV5bDK5eSY58IZLl/o8FDw8P7628le3vymK1BQkPDw/vc3gtO99wt7EFHh4e3ifwki1sHi60BSDflB/MWvDw8PBi3koD7F3nD/X38PDw8MquehvC5kUl2aC3xeCPT+Hh4eEd4CXBQRsQ5MHB+pBBVDDw8PDwHuS1f/WTYtCWhLzBdrk0eHh4eI/z2iVoG2N5q2wWNOPh4eGd4+VxQNvQmgUNySIOE2g8PDy8ZV4+CrAypJW/kscTeYHBw8PD28VLfnDzQCFp9rd3nMW+l/09PDw8vGXerLnVBq+zh87jiaUxLDw8PLySNxtvmm2a8yu3fX88PDy853ltkDobscpfnzXDLocG8PDw8Lby1ocA2vGs2dDALOzAw8PDO8Fbf6x2EGqlDVaXJTw8PLwDvPynth26ao9dsS8eHh7eM7x2RKDuqsXtq2QbPRxKwMPDw9vEa1tWbfM+f9wck8cieHh4eCd4ebSah615zNoGuPfXH1Y8PDw8vBGvfZS2tb+yEU8+FV0ZDw8PbxNvtrWdDQ0khSQPLKK74+Hh4R3g5Y2rWVHJN+Xt9r1G4uHh4R3gtfFrG0/kQwZt9JB/DXh4eHi7eG2IsDeeaAcI6m8MDw8P7xhv9np+PtsKb0ip8fDw8LbyvssjLy27NtPtMv0DxsPDwzvAW2nhr7Sy8tvPxrnaAQU8PDy8lpcUg/XxqXylVxpgw6EBPDw8vBGv/VFuW1NtCWkX8fL6eHh4eB/Au/+ZXmmJrWzoL++Lh4eH91ZeAp5toGfFpggj8PDw8A7w8gGpdkQg3wTnDbNh8oGHh4e3iTf7q98yZsuX331bfw8PDw/vjvcDwYBK3wyh5D8AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.7"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.7" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'hahahaha';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'fuze's blog';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>
