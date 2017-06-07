@@ -43,7 +43,7 @@
 <meta property="og:image" content="http://yoursite.com/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/7.png">
 <meta property="og:image" content="http://yoursite.com/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/8.png">
 <meta property="og:image" content="http://yoursite.com/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/9.png">
-<meta property="og:updated_time" content="2017-06-07T03:18:52.000Z">
+<meta property="og:updated_time" content="2017-06-07T14:42:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IMPROVED MUSICAL ONSET DETECTION WITH CONVOLUTIONAL NEURAL NETWORKS 阅读笔记">
 <meta name="twitter:description" content="本文是IMPROVED MUSICAL ONSET DETECTION WITH CONVOLUTIONAL NEURAL NETWORKS的阅读笔记，论文探索了CNN在音符开始时间探测的应用，采用100分钟，具有26K标记点的数据集，分析了CNN中各层的内在含义，总结了CNN探测音符onset的两点优势：
@@ -168,13 +168,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#引言"><span class="post-toc-number">1.</span> <span class="post-toc-text">引言</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">
-                
-                    
-                    
-                
-                
-            </span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#模型"><span class="post-toc-number">2.</span> <span class="post-toc-text">模型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据预处理"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">数据预处理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#模型训练"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">模型训练</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#模型分析"><span class="post-toc-number">3.</span> <span class="post-toc-text">模型分析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#输出层"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">输出层</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#全连接层"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">全连接层</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#卷积层"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">卷积层</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#引言"><span class="post-toc-number">1.</span> <span class="post-toc-text">引言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#模型"><span class="post-toc-number">2.</span> <span class="post-toc-text">模型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据预处理"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">数据预处理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#模型训练"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">模型训练</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#模型分析"><span class="post-toc-number">3.</span> <span class="post-toc-text">模型分析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#输出层"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">输出层</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#全连接层"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">全连接层</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#卷积层"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">卷积层</span></a></li></ol></li></ol>
         </nav>
     </aside>
     
@@ -205,18 +199,20 @@
 <blockquote>
 <ul>
 <li>用不同的探测器分别检测打击乐的onset以及和声乐的onset</li>
-<li>在同一个算法中，综合许多微小变量的值</li>
+<li>在同一个算法中，综合许多微小变量的值  <a id="more"></a>
+</li>
 </ul>
 </blockquote>
 <hr>
-<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>类比图像边缘检测，在图像中高亮锋利边缘仅仅需要局部的图像信息以及一个较小的卷积核，如下图所示，一个灰度图像卷积<strong>随机</strong>的$5\times 5$卷积核即可得到图像的边缘：</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><figure class="image-bubble">
+<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>类比图像边缘检测，在图像中高亮锋利边缘仅仅需要局部的图像信息以及一个较小的卷积核，如下图所示，一个灰度图像卷积<strong>随机</strong>的$5\times 5$卷积核即可得到图像的边缘：<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
                     <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/1.png" alt="" title="">
                 </div>
                 <div class="image-caption"></div>
-            </figure></h2><h1 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h1><p>模型的结构如图所示：<br><figure class="image-bubble">
+            </figure></p>
+<hr>
+<h1 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h1><p>模型的结构如图所示：<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
                     <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/2.png" alt="" title="">
@@ -224,54 +220,36 @@
                 <div class="image-caption"></div>
             </figure></p>
 <h2 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h2><p>数据预处理为：将音频由44.1kHz采样到16kHz，计算了跳跃长度为10ms，<strong>窗口长为23ms、46ms和93ms的三幅频谱图</strong>，并经过80-band的Mel<strong>滤波器</strong>，归一化频谱参数，使其0均值1方差。模型的输入为15帧数据。</p>
-<h2 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h2><p>MIDI-batch为256，100次迭代，固定的学习率为0.05，初始动量为0.45.数据采用dropout，训练集的<strong>软处理</strong>，即在最靠近onset的$\pm 7$帧（共15帧）都被认为是正样本。<strong>个人认为不如用高斯曲线拟合</strong>。同时卷积层的激活函数采用relu。训练的结果如图：<br><figure class="image-bubble">
+<h2 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h2><p>MIDI-batch为256，100次迭代，固定的学习率为0.05，初始动量为0.45.数据采用dropout，训练集的<strong>软处理</strong>，即在最靠近onset的$\pm 7$帧（共15帧）都被认为是正样本。<strong>个人认为不如用高斯曲线拟合</strong>。同时卷积层的激活函数采用relu。训练的结果如图：<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
                     <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/3.png" alt="" title="">
                 </div>
                 <div class="image-caption"></div>
-            </figure><br>可见，CNN的结果要比人工设计的算法<code>SuoerFlux</code>好很多。</p>
+            </figure>可见，CNN的结果要比人工设计的算法<code>SuoerFlux</code>好很多。</p>
 <hr>
 <h1 id="模型分析"><a href="#模型分析" class="headerlink" title="模型分析"></a>模型分析</h1><p>为了简化分析移除第二层卷积层，只保留第一层</p>
-<h2 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h2><p>输出层共256个神经元，如图所示，将神经元按权值由辅导正的顺序排列在图中，下图依次为两个输入波形的频谱图（窗口长为46ms），神经网络的输出以及ground truth，和输出层256个神经元的激活情况。<br><figure class="image-bubble">
+<h2 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h2><p>输出层共256个神经元，如图所示，将神经元按权值由辅导正的顺序排列在图中，下图依次为两个输入波形的频谱图（窗口长为46ms），神经网络的输出以及ground truth，和输出层256个神经元的激活情况。<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
                     <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/4.png" alt="" title="">
                 </div>
                 <div class="image-caption"></div>
-            </figure><br><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/5.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure><br><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/6.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure><br>如上图所示，大多数强连接神经元，即权重绝对值较大的神经元并没有被激活，他们可能专门用于处理训练集中的特殊情况。一些正神经元探测敲击onset开始，相对应的另一幅图的一些神经元探测和声onset的开始。</p>
-<h2 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h2><p>我们定位到了离信号改变较近的神经元，并可视化与这些神经元相连的feature map，如下如所示，即为两种典型的feature map的权重：<br><figure class="image-bubble">
+            </figure> <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/5.png"><img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/6.png">如上图所示，大多数强连接神经元，即权重绝对值较大的神经元并没有被激活，他们可能专门用于处理训练集中的特殊情况。一些正神经元探测敲击onset开始，相对应的另一幅图的一些神经元探测和声onset的开始。</p>
+<h2 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h2><p>我们定位到了离信号改变较近的神经元，并可视化与这些神经元相连的feature map，如下如所示，即为两种典型的feature map的权重：<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
                     <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/7.png" alt="" title="">
                 </div>
                 <div class="image-caption"></div>
-            </figure><br>如上图所示共有上下两组权重，第二组的第四幅图可以明显的看到快速的正负正负的权值变化，有利于探测短时间的频域变化，即打击乐的onset。而第一组的第一幅和第九幅图可以看到缓慢的正负变化，有利于探测长时间的频谱变化，及和声乐onset。</p>
-<h2 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h2><p>我们定位map4和map9，下图一左即为第一个信号经过map4的值，下图一右为第二个信号经过map9的值。可以看出，在onset时刻，map的值有了变化。下图二为map4和map9对应的卷积核（依次为中短长窗口）。可以看到map4的卷积核探测频谱变化较快的点，而map9的卷积核探测变化较慢的点。<br><figure class="image-bubble">
+            </figure>如上图所示共有上下两组权重，第二组的第四幅图可以明显的看到快速的正负正负的权值变化，有利于探测短时间的频域变化，即打击乐的onset。而第一组的第一幅和第九幅图可以看到缓慢的正负变化，有利于探测长时间的频谱变化，及和声乐onset。</p>
+<h2 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h2><p>我们定位map4和map9，下图一左即为第一个信号经过map4的值，下图一右为第二个信号经过map9的值。可以看出，在onset时刻，map的值有了变化。下图二为map4和map9对应的卷积核（依次为中短长窗口）。可以看到map4的卷积核探测频谱变化较快的点，而map9的卷积核探测变化较慢的点。<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
                     <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/8.png" alt="" title="">
                 </div>
                 <div class="image-caption"></div>
-            </figure><br><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/9.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure></p>
+            </figure> <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/9.png"></p>
 
         </div>
 
@@ -279,7 +257,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2017-06-07T03:18:52.000Z" itemprop="dateUpdated">2017-06-07 11:18:52</time>
+    Last updated: <time datetime="2017-06-07T14:42:02.000Z" itemprop="dateUpdated">2017-06-07 22:42:02</time>
 </span><br>
 
 
@@ -320,7 +298,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/&title=《IMPROVED MUSICAL ONSET DETECTION WITH CONVOLUTIONAL NEURAL NETWORKS 阅读笔记》 — fuze blog&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/&title=《IMPROVED MUSICAL ONSET DETECTION WITH CONVOLUTIONAL NEURAL NETWORKS 阅读笔记》 — fuze blog&source=本文是IMPROVED MUSICAL ONSET DETECTION WITH CONVOLUTIONAL NEURAL NETWORKS的阅读笔记，论..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -457,7 +435,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/&title=《IMPROVED MUSICAL ONSET DETECTION WITH CONVOLUTIONAL NEURAL NETWORKS 阅读笔记》 — fuze blog&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/&title=《IMPROVED MUSICAL ONSET DETECTION WITH CONVOLUTIONAL NEURAL NETWORKS 阅读笔记》 — fuze blog&source=本文是IMPROVED MUSICAL ONSET DETECTION WITH CONVOLUTIONAL NEURAL NETWORKS的阅读笔记，论..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
