@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-06-06T13:01:01.000Z</updated>
+  <updated>2017-06-07T03:18:52.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,106 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>IMPROVED MUSICAL ONSET DETECTION WITH CONVOLUTIONAL NEURAL NETWORKS 阅读笔记</title>
+    <link href="http://yoursite.com/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"/>
+    <id>http://yoursite.com/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/</id>
+    <published>2017-06-07T01:45:10.000Z</published>
+    <updated>2017-06-07T03:18:52.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>本文是<a href="https://github.com/Fuzesunshine/learningPapers/blob/master/MusicTranscription/p7029-schluter.pdf" target="_blank" rel="external">IMPROVED MUSICAL ONSET DETECTION WITH CONVOLUTIONAL NEURAL NETWORKS</a>的阅读笔记，论文探索了CNN在音符开始时间探测的应用，采用100分钟，具有26K标记点的数据集，<strong>分析了CNN中各层的内在含义</strong>，总结了CNN探测音符onset的两点优势：</p>
+<blockquote>
+<ul>
+<li>用不同的探测器分别检测打击乐的onset以及和声乐的onset</li>
+<li>在同一个算法中，综合许多微小变量的值</li>
+</ul>
+</blockquote>
+<hr>
+<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>类比图像边缘检测，在图像中高亮锋利边缘仅仅需要局部的图像信息以及一个较小的卷积核，如下图所示，一个灰度图像卷积<strong>随机</strong>的$5\times 5$卷积核即可得到图像的边缘：</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/1.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></h2><h1 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h1><p>模型的结构如图所示：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/2.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<h2 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h2><p>数据预处理为：将音频由44.1kHz采样到16kHz，计算了跳跃长度为10ms，<strong>窗口长为23ms、46ms和93ms的三幅频谱图</strong>，并经过80-band的Mel<strong>滤波器</strong>，归一化频谱参数，使其0均值1方差。模型的输入为15帧数据。</p>
+<h2 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h2><p>MIDI-batch为256，100次迭代，固定的学习率为0.05，初始动量为0.45.数据采用dropout，训练集的<strong>软处理</strong>，即在最靠近onset的$\pm 7$帧（共15帧）都被认为是正样本。<strong>个人认为不如用高斯曲线拟合</strong>。同时卷积层的激活函数采用relu。训练的结果如图：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/3.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>可见，CNN的结果要比人工设计的算法<code>SuoerFlux</code>好很多。</p>
+<hr>
+<h1 id="模型分析"><a href="#模型分析" class="headerlink" title="模型分析"></a>模型分析</h1><p>为了简化分析移除第二层卷积层，只保留第一层</p>
+<h2 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h2><p>输出层共256个神经元，如图所示，将神经元按权值由辅导正的顺序排列在图中，下图依次为两个输入波形的频谱图（窗口长为46ms），神经网络的输出以及ground truth，和输出层256个神经元的激活情况。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/4.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/5.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/6.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>如上图所示，大多数强连接神经元，即权重绝对值较大的神经元并没有被激活，他们可能专门用于处理训练集中的特殊情况。一些正神经元探测敲击onset开始，相对应的另一幅图的一些神经元探测和声onset的开始。</p>
+<h2 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h2><p>我们定位到了离信号改变较近的神经元，并可视化与这些神经元相连的feature map，如下如所示，即为两种典型的feature map的权重：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/7.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>如上图所示共有上下两组权重，第二组的第四幅图可以明显的看到快速的正负正负的权值变化，有利于探测短时间的频域变化，即打击乐的onset。而第一组的第一幅和第九幅图可以看到缓慢的正负变化，有利于探测长时间的频谱变化，及和声乐onset。</p>
+<h2 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h2><p>我们定位map4和map9，下图一左即为第一个信号经过map4的值，下图一右为第二个信号经过map9的值。可以看出，在onset时刻，map的值有了变化。下图二为map4和map9对应的卷积核（依次为中短长窗口）。可以看到map4的卷积核探测频谱变化较快的点，而map9的卷积核探测变化较慢的点。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/8.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/9.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文是&lt;a href=&quot;https://github.com/Fuzesunshine/learningPapers/blob/master/MusicTranscription/p7029-schluter.pdf&quot; target=&quot;_blank&quot; rel=&quot;extern
+    
+    </summary>
+    
+      <category term="paper reading" scheme="http://yoursite.com/categories/paper-reading/"/>
+    
+    
+      <category term="music note detection" scheme="http://yoursite.com/tags/music-note-detection/"/>
+    
+      <category term="CNN" scheme="http://yoursite.com/tags/CNN/"/>
+    
+  </entry>
+  
+  <entry>
     <title>music note onset detection 论文阅读</title>
     <link href="http://yoursite.com/2017/06/05/music-note-detection-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
     <id>http://yoursite.com/2017/06/05/music-note-detection-论文阅读/</id>
     <published>2017-06-05T12:37:08.000Z</published>
-    <updated>2017-06-06T13:01:01.000Z</updated>
+    <updated>2017-06-07T01:46:55.000Z</updated>
     
     <content type="html"><![CDATA[<p>本文是<a href="https://github.com/Fuzesunshine/learningPapers/blob/master/MusicTranscription/%5BInternational%20Journal%20of%20Applied%20Mathematics%20and%20Computer%20Science%5D%20Note%20onset%20detection%20in%20musical%20signals%20via%20neuralnetworkbased%20multiODF%20fusion.pdf" target="_blank" rel="external">NOTE ONSET DETECTION IN MUSICAL SIGNALS VIA NEURAL–NETWORK–BASED MULTI–ODF FUSION</a>的阅读笔记。本文主要将ODF：onset detection function与神经网络结合起来，做music note onset的检测。</p>
 <hr>
@@ -85,8 +180,8 @@
     
     </summary>
     
+      <category term="paper reading" scheme="http://yoursite.com/categories/paper-reading/"/>
     
-      <category term="paper reading" scheme="http://yoursite.com/tags/paper-reading/"/>
     
       <category term="neural network" scheme="http://yoursite.com/tags/neural-network/"/>
     
