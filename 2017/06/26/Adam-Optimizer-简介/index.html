@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    
+    
+    
+    <title>Adam Optimization 简介 | fuze blog | 专心学术，专心看书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#111F1B">
+    
+    
+    <meta name="keywords" content="neural network,Adam,optimization">
+    <meta name="description" content="本文介绍了Adam Optimization参考了论文ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION，并介绍了几种优化方法的优劣。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Adam Optimization 简介">
+<meta property="og:url" content="http://yoursite.com/2017/06/26/Adam-Optimizer-简介/index.html">
+<meta property="og:site_name" content="fuze blog">
+<meta property="og:description" content="本文介绍了Adam Optimization参考了论文ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION，并介绍了几种优化方法的优劣。">
+<meta property="og:image" content="http://yoursite.com/2017/06/26/Adam-Optimizer-简介/1.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/26/Adam-Optimizer-简介/2.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/26/Adam-Optimizer-简介/3.gif">
+<meta property="og:image" content="http://yoursite.com/2017/06/26/Adam-Optimizer-简介/4.gif">
+<meta property="og:updated_time" content="2017-06-29T09:46:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Adam Optimization 简介">
+<meta name="twitter:description" content="本文介绍了Adam Optimization参考了论文ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION，并介绍了几种优化方法的优劣。">
+<meta name="twitter:image" content="http://yoursite.com/2017/06/26/Adam-Optimizer-简介/1.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="fuze blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.7">
+    <script>window.lazyScripts=[]</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fuze</h5>
+          <a href="mailto:fuzecong@gmail.com" title="fuzecong@gmail.com" class="mail">fuzecong@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/fuzesunshine" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://jialin.wang" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                cater.log
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Adam Optimization 简介</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Adam Optimization 简介</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-06-26T13:10:10.000Z" itemprop="datePublished" class="page-time">
+  2017-06-26
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/paper-reading/">paper reading</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Gradient-Descent"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Gradient Descent</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Mini-batch-Gradient-Descent"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Mini-batch Gradient Descent</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Momentum"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Momentum</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Adagrad"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">Adagrad</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Adadelta"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">Adadelta</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#算法与证明"><span class="post-toc-number">2.</span> <span class="post-toc-text">算法与证明</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#结果与优点"><span class="post-toc-number">3.</span> <span class="post-toc-text">结果与优点</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-Adam-Optimizer-简介"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Adam Optimization 简介</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-06-26 21:10:10" datetime="2017-06-26T13:10:10.000Z"  itemprop="datePublished">2017-06-26</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/paper-reading/">paper reading</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>本文介绍了Adam Optimization参考了论文<a href="https://github.com/Fuzesunshine/learningPapers/blob/master/1412.6980.pdf" target="_blank" rel="external">ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION</a>，并介绍了几种优化方法的优劣。<br><a id="more"></a></p>
+<hr>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><h2 id="Gradient-Descent"><a href="#Gradient-Descent" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h2><p>取损失函数（loss function）的梯度如$(1)$式所示：<br>$$\begin{equation}<br>g_t = \nabla_\theta L_t(\theta_{t-1};x;y)<br>\label{eq:1}<br>\end{equation}$$</p>
+<p>损失函数是权重$\theta$的函数，每次计算都将整个训练集$(x,y)$输入到损失函数中。每次迭代的步骤为：<br>$$ \begin{equation}<br>\theta_{t} = \theta_{t-1} - \alpha\cdot g_t<br>\label{eq:2}<br>\end{equation}$$<br>保证了$\theta$沿梯度的方向下降$\alpha$，但是这种方法有着明显的缺点：</p>
+<blockquote>
+<p>当数据集过大时，每一次都将整个数据集计算一遍梯度回传是非常耗时的，而且一般无法将整个数据集都放到内存当中<br>学习率$\alpha$是一个超参数，需要人为设置<br>算法容易得到局部最优解</p>
+</blockquote>
+<h2 id="Mini-batch-Gradient-Descent"><a href="#Mini-batch-Gradient-Descent" class="headerlink" title="Mini-batch Gradient Descent"></a>Mini-batch Gradient Descent</h2><p>因为取整个数据集是不明智的，所以在计算梯度时，取数据集的一部分，如$(3)$式所示：<br>$$ \begin{equation}<br>g_t = \nabla_\theta f_t(\theta _{t-1};x^{(i:i+n)};y^{(i:i+n)})<br>\label{eq:3}<br>\end{equation}$$<br>这样做的好处在于简化了计算梯度的过程，同时因为一部分数据的局部最优解不一定是另一部分数据的局部最优解，所以不一定会使算法停在部分局部最优解上。但它也有较严重的缺点：</p>
+<blockquote>
+<p>由于随机取数据集，可能导致梯度的噪声非常大，使算法收敛的速率很慢<br>容易停在满足整体数据集的局部最优解上</p>
+</blockquote>
+<h2 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h2><p>利用物理中动量的概念，但是我个人认为更接近于速度的概念，即将每部的梯度当成加速度，而不是之前的速度，这样使得噪声很大的随机梯度可以变得平滑，同时由于梯度为加速度，可以使算法收敛的更快，且可以越过一些局部最优解。动量公式以及迭代公式如$(4)$、$(5)$式所示：$$ \begin{equation}<br>m_t = \mu \cdot m_{t-1} + g_t<br>\label{eq:4}<br>\end{equation}$$ $$ \begin{equation}<br>\theta_t = \theta_{t-1} - \alpha \cdot m_t<br>\label{eq:5}<br>\end{equation}$$它的缺点也是显而易见的：</p>
+<blockquote>
+<p>需要规定超参数$\mu$和$\alpha$，即不能自适应的调节超参数，可能会使$\theta$的移动方向偏移梯度下降的主方向，从而没有那么快速地收敛</p>
+</blockquote>
+<h2 id="Adagrad"><a href="#Adagrad" class="headerlink" title="Adagrad"></a>Adagrad</h2><p>Adagrad引入了梯度$g_t$的平方和作为对学习率的约束，从而达到自适应的效果。<br>$$ \begin{equation}<br>n_t = n_{t-1} + g_t^2<br>\label{eq:6}<br>\end{equation}$$ $$ \begin{equation}<br>\theta_t = \theta_{t-1} - \frac{\alpha}{\sqrt{n_t + \epsilon}} \cdot g_t<br>\label{eq:7}<br>\end{equation}$$从式$(7)$可以看出，越到后期平方和越大，移动的步长越小，<strong>适用于处理稀疏梯度问题</strong>，但是不知道是什么原因，缺点为：</p>
+<blockquote>
+<p>仍然有一个超参数，并且超参数的设置对自适应系数的影响比较大<br>在中后期，平方和越来越大，有可能使训练提前结束</p>
+</blockquote>
+<h2 id="Adadelta"><a href="#Adadelta" class="headerlink" title="Adadelta"></a>Adadelta</h2><p>对平方和做了优化，使其为梯度的二阶矩的期望，但是是有偏期望。如式$(8)$：<br>$$ \begin{equation}<br>\mathbb{E}[g_t^2] = \beta_2\cdot \mathbb{E}[g_{t-1}^2]+(1-\beta_2)\cdot g_t^2<br>\label{eq:8}<br>\end{equation}$$这样解决了后期算法提前结束的问题，同时为了自适应学习率，Adadelta采用了步长相加的方式，类似于动量的形式：<br>$$ \begin{equation}<br>\Delta \theta_t = - \frac{\sqrt{\mathbb{E}[\Delta \theta_{t-1}^2]+\epsilon}}{\sqrt{\mathbb{E}[g_{t}^2]+\epsilon}} \cdot g_t<br>\label{eq:9}<br>\end{equation}$$ $$ \begin{equation}<br>\theta_t = \theta_{t-1} + \Delta \theta_{t}<br>\label{eq:10}<br>\end{equation}$$ 这样解决了学习率是超参数的问题，但是由于式$(9)$是一个累加的过程，导致自适应学习率越来越大，在训练后期，在<strong>局部最小值附近抖动</strong></p>
+<hr>
+<h1 id="算法与证明"><a href="#算法与证明" class="headerlink" title="算法与证明"></a>算法与证明</h1><p>Adam（Adaptive Moment Estimation）我理解是改进了Adadelta中式$(9)$中累加的问题，而用相似的期望的方式代替：<br>$$ \begin{equation}<br>m_t = \beta_1\cdot m_{t-1}+(1-\beta_1)\cdot g_t<br>\label{eq:11}<br>\end{equation}$$也可以理解为用动量的累加自适应代替学习率，结合了Momentum，加快了算法的收敛速度，二阶矩的估计与式$(8)$相似：<br>$$ \begin{equation}<br>v_t = \beta _2\cdot v_{t-1}+(1-\beta _2)\cdot g_t^2<br>\label{eq:12}<br>\end{equation}$$但是当初始化的$m_0$、$m_0$都为0，且$\beta_1$、$\beta_2$都接近1时，$m_t$、$v_t$近似等于零，这是因为$m_t$、$v_t$实际上是对$g_t$、$g_t^2$的有偏估计，证明在<a href="https://github.com/Fuzesunshine/learningPapers/blob/master/1412.6980.pdf" target="_blank" rel="external">论文</a>中，结果如式$(13)$：<br>$$ \begin{equation}<br>\mathbb{E}[v_t] = \mathbb{E}[g_t^2]\cdot (1-\beta_2^t)+\zeta<br>\label{eq:13}<br>\end{equation}$$故令：<br>$$ \begin{equation}<br>\hat{m_t} = m_t/(1-\beta _1^t)<br>\label{eq:14}<br>\end{equation}$$ $$ \begin{equation}<br>\hat{v_t} = v_t/(1-\beta _2^t)<br>\label{eq:15}<br>\end{equation}$$这样$\hat{m_t}$、$\hat{v_t}$为$g_t$、$g_t^2$的无偏估计，又因为：<br>$$ \begin{equation}<br>\frac{\mathbb{E}[g_t]^2}{\mathbb{E}[g_t^2]} \leq 1<br>\label{eq:16}<br>\end{equation}$$故学习率总小于$\alpha$，控制了学习率不会过大。</p>
+<hr>
+<h1 id="结果与优点"><a href="#结果与优点" class="headerlink" title="结果与优点"></a>结果与优点</h1><p>Adadelta，RMSprop，Adam是比较相近的算法，在相似的情况下表现差不多。Adam结合了Adagrad善于处理稀疏梯度和RMSprop善于处理非平稳目标的优点、也适用于大多非凸优化，5适用于大数据集和高维空间。论文中的结果证明，Adam的收敛速度很快。这是逻辑回归的损失函数下降图：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/26/Adam-Optimizer-简介/1.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><br>这是多层神经网络的损失函数下降图<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/26/Adam-Optimizer-简介/2.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>最后附上两张著名的动图，应该是出自李菲菲教授的CS231：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/26/Adam-Optimizer-简介/3.gif" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2017/06/26/Adam-Optimizer-简介/4.gif" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-06-29T09:46:09.000Z" itemprop="dateUpdated">2017-06-29 17:46:09</time>
+</span><br>
+
+
+        
+        Thanks for reading.
+        
+    </div>
+    <footer>
+        <a href="http://yoursite.com">
+            <img src="/img/avatar.png" alt="fuze">
+            fuze
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Adam/">Adam</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neural-network/">neural network</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/optimization/">optimization</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2017/06/26/Adam-Optimizer-简介/&title=《Adam Optimization 简介》 — fuze blog&pic=http://yoursite.com/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/06/26/Adam-Optimizer-简介/&title=《Adam Optimization 简介》 — fuze blog&source=本文介绍了Adam Optimization参考了论文ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION，并介绍了几种优..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/06/26/Adam-Optimizer-简介/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Adam Optimization 简介》 — fuze blog&url=http://yoursite.com/2017/06/26/Adam-Optimizer-简介/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2017/06/26/Adam-Optimizer-简介/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/06/07/IMPROVED-MUSICAL-ONSET-DETECTION-WITH-CONVOLUTIONAL-NEURAL-NETWORKS-阅读笔记/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">IMPROVED MUSICAL ONSET DETECTION WITH CONVOLUTIONAL NEURAL NETWORKS 阅读笔记</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Fuzesunshine',
+            repo: 'BlogComment',
+            oauth: {
+                client_id: '716b70c2b7b3de6f7f89',
+                client_secret: '71a4d4ab3abf26c245fe1b2c35adc3d79b75f5ba',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>fuze &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2017/06/26/Adam-Optimizer-简介/&title=《Adam Optimization 简介》 — fuze blog&pic=http://yoursite.com/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/06/26/Adam-Optimizer-简介/&title=《Adam Optimization 简介》 — fuze blog&source=本文介绍了Adam Optimization参考了论文ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION，并介绍了几种优..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/06/26/Adam-Optimizer-简介/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Adam Optimization 简介》 — fuze blog&url=http://yoursite.com/2017/06/26/Adam-Optimizer-简介/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2017/06/26/Adam-Optimizer-简介/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACM0lEQVR42u3aS27DMAxF0ex/0y7QUQexcx+pFBB1NQoat/ZxAYK/1wuf6/fwn1x/zt23d3e5+3bBkSFDxraM6/H0GWv/zi1VhgwZBzCegyx5IBKsn3n8LjJkyJBBkjkepkkATV+WDBkyZNQC7nPqxq+XIUOGjE4Ry0MnaaJxxuJaXIYMGRsyaoXo/3z+4nxDhgwZmzCu8PD2GR+CpuXxmzvKkCFjNIOPFckyBAeTh44HEjJkyBjNiBtb7WFkuorBX7QMGTKmMsgv8zC6KpVMI6oMGTJmM0gXq7M8wUPnVxpzMmTI2JyRpoO1JK9WmgZsGTJkHMDgQZM36WrBupaYypAh40wGCYIkKPOmP2+rBZNYGTJkjGCkD8GHkekAgC+ikWGqDBkyTmN0BgkkOKb3kiFDxmmMWhHbKXfTEWawZiFDhoxjGJ3Ayptuq+autwFXhgwZgxjxpe0NDl4Ax1mtDBkyhjJIali7Pk0H01WMeBIrQ4aMbRm84dUfQ3bWLMhYQoYMGVMZvMhMQ2EwhQgbbej/IEOGjHGMNJnjRW8tHSSjiDcjTBkyZAxl1NpnncWvdIQZhHsZMmQMZVzhSRM+guQlLipiZciQMY6xtqRMx5m1EWknZMuQIWNfBg+yHVht8SJ4NTJkyDiAkS5AtG5ZSvI+vEoZMmTIaKx58XBcWzuTIUOGDH4ND5dpPR30DmXIkDGaUVtUrS2z1krcD3gZMmSMZqwKl7xhl7b+ecooQ4aMcYwfOkCodthjjv8AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.7"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.7" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'hahahaha';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'fuze's blog';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>
